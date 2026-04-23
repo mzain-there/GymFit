@@ -32,7 +32,7 @@ npm start            # standard node
 ## 📁 Project Structure
 
 ```
-gym-management-system/
+gymfit/
 │
 ├── server.js                  → Main Express server (entry point)
 ├── package.json               → Dependencies & npm scripts
