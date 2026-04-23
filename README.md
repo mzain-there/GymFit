@@ -13,7 +13,7 @@ A **full-stack Gym Management System** built with **Node.js + Express** backend 
 
 ```bash
 # 1. Clone / navigate into the project folder
-cd gym-management-system
+cd gymfit
 
 # 2. Install dependencies
 npm install
