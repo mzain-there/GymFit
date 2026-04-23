@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — GymFit</title>
+  <meta name="description" content="Login to the GymFit admin dashboard to manage members, trainers, and membership plans." />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: var(--bg-base);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0, 229, 153, 0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 50%, rgba(0, 212, 255, 0.06) 0%, transparent 60%);
+    }
+
+    .login-grid-lines {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(0, 229, 153, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 153, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .login-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      padding: 20px;
+    }
+
+    .login-box {
+      background: var(--bg-card);
+      padding: 48px 40px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg), 0 0 60px rgba(0, 229, 153, 0.05);
+      text-align: center;
+    }
+
+    .login-logo {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .login-logo span {
+      color: var(--primary);
+    }
+
+    .login-icon {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 32px var(--primary-glow);
+    }
+
+    .login-subtitle {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .login-box .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .login-box .form-label {
+      margin-bottom: 6px;
+    }
+
+    .login-error {
+      color: var(--danger);
+      font-size: 13px;
+      margin-top: -8px;
+      margin-bottom: 16px;
+      display: none;
+      text-align: left;
+    }
+
+    .login-footer {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .login-footer a {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .login-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 24px 0;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .login-divider::before,
+    .login-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-bg"></div>
+  <div class="login-grid-lines"></div>
+
+  <div class="login-wrapper">
+    <div class="login-box">
+      <div class="login-icon">🔐</div>
+      <div class="login-logo">Gym<span>Fit</span></div>
+      <p class="login-subtitle">Enter your credentials to access the admin panel</p>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" id="username" class="form-control" placeholder="Enter username" required autofocus
+            style="width:100%;" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="password" class="form-control" placeholder="Enter password" required
+            style="width:100%;" />
+        </div>
+        <div class="login-error" id="loginError">
+          ❌ Invalid username or password. Please try again.
+        </div>
+        <button type="submit" class="btn btn-primary btn-glow"
+          style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">
+          Login to Dashboard →
+        </button>
+      </form>
+
+      <div class="login-divider">or</div>
+
+      <div class="login-footer">
+        <a href="index.html">← Back to Home</a>
+        &nbsp;·&nbsp;
+        <a href="register.html">Register as Member</a>
+      </div>
+
+      <p style="margin-top:20px;font-size:11px;color:var(--text-muted);">
+        Default credentials: <strong>admin</strong> / <strong>admin</strong>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function handleLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('username').value.toLowerCase();
+      const p = document.getElementById('password').value.toLowerCase();
+      const errorEl = document.getElementById('loginError');
+
+      if (u === 'admin' && p === 'admin') {
+        localStorage.setItem('loggedIn', 'true');
+        // Add a small animation before redirect
+        document.querySelector('.login-box').style.transform = 'scale(0.95)';
+        document.querySelector('.login-box').style.opacity = '0.5';
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 300);
+      } else {
+        errorEl.style.display = 'block';
+        document.querySelector('.login-box').style.animation = 'shake 0.5s ease';
+        setTimeout(() => {
+          document.querySelector('.login-box').style.animation = '';
+        }, 500);
+      }
+    }
+  </script>
+
+  <style>
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20% {
+        transform: translateX(-10px);
+      }
+
+      40% {
+        transform: translateX(10px);
+      }
+
+      60% {
+        transform: translateX(-5px);
+      }
+
+      80% {
+        transform: translateX(5px);
+      }
+    }
+  </style>
+</body>
+
+</html>

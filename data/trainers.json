@@ -1,0 +1,62 @@
+[
+  {
+    "id": "trainer-001",
+    "name": "Jake Reynolds",
+    "email": "jake.r@gymfit.com",
+    "phone": "555-0201",
+    "specialization": "Strength & Conditioning",
+    "experience": 8,
+    "rating": 4.9,
+    "status": "Active",
+    "salary": 4500,
+    "joinDate": "2020-03-15",
+    "clients": 24,
+    "certifications": ["NASM-CPT", "CrossFit L2", "TRX"],
+    "schedule": "Mon-Fri 6AM-2PM"
+  },
+  {
+    "id": "trainer-002",
+    "name": "Mia Lopez",
+    "email": "mia.l@gymfit.com",
+    "phone": "555-0202",
+    "specialization": "Yoga & Flexibility",
+    "experience": 6,
+    "rating": 4.8,
+    "status": "Active",
+    "salary": 3800,
+    "joinDate": "2021-07-01",
+    "clients": 18,
+    "certifications": ["RYT-500", "ACE-CPT"],
+    "schedule": "Mon-Wed-Fri 7AM-3PM"
+  },
+  {
+    "id": "trainer-003",
+    "name": "Chris Patel",
+    "email": "chris.p@gymfit.com",
+    "phone": "555-0203",
+    "specialization": "Cardio & HIIT",
+    "experience": 5,
+    "rating": 4.7,
+    "status": "Active",
+    "salary": 3500,
+    "joinDate": "2022-01-10",
+    "clients": 21,
+    "certifications": ["ACSM-CPT", "Insanity Certified"],
+    "schedule": "Tue-Thu-Sat 8AM-4PM"
+  },
+  {
+    "id": "trainer-004",
+    "name": "Nina Orlov",
+    "email": "nina.o@gymfit.com",
+    "phone": "555-0204",
+    "specialization": "Nutrition & Weight Loss",
+    "experience": 10,
+    "rating": 5.0,
+    "status": "On Leave",
+    "salary": 5200,
+    "joinDate": "2018-09-20",
+    "clients": 30,
+    "certifications": ["PRECISION Nutrition L2", "NASM-CNC", "ISSA-CPT"],
+    "schedule": "Mon-Fri 9AM-5PM"
+  }
+]

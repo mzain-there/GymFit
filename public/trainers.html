@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trainers — GymFit Admin</title>
+  <meta name="description" content="Manage gym trainers — view profiles, specializations, ratings, and schedules." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="page-wrapper">
+
+<!-- ═══ SIDEBAR ══════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🏋️</div>
+    <div class="logo-text">Gym<span>Fit</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+    <div class="nav-section-label">Management</div>
+    <a href="members.html" class="nav-item"><span class="nav-icon">👥</span><span class="nav-label">Members</span><span class="nav-badge" id="sidebarMemberCount">—</span></a>
+    <a href="trainers.html" class="nav-item active"><span class="nav-icon">🏋️</span><span class="nav-label">Trainers</span></a>
+    <a href="plans.html" class="nav-item"><span class="nav-icon">💳</span><span class="nav-label">Plans</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="sidebar-toggle" onclick="Sidebar.toggle()">
+      <span id="sidebarToggleIcon">←</span>
+      <span class="nav-label">Collapse</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══ MAIN CONTENT ═════════════════════════════════ -->
+<div class="main-content" id="mainContent">
+
+  <header class="topbar">
+    <button class="topbar-btn" onclick="Sidebar.toggle()">☰</button>
+    <span class="topbar-title">Trainer Management</span>
+    <div class="topbar-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="trainerSearch" placeholder="Search trainers..." />
+    </div>
+    <div class="topbar-actions">
+      <button class="topbar-btn" onclick="ThemeManager.toggle()" id="themeToggle">🌓</button>
+      
+      <div class="dropdown">
+        <button class="topbar-btn" id="alertsBtn" title="Alerts" onclick="toggleDropdown('alertsDropdown')">
+          🔔<span class="notification-dot"></span>
+        </button>
+        <div id="alertsDropdown" class="dropdown-content">
+          <div class="dropdown-header">System Notifications</div>
+          <a href="#">⚠️ Member John Doe expired today</a>
+          <a href="#">✅ New plan "Annual Premium" created</a>
+          <a href="#">💰 Payment due for Alice</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <div class="topbar-avatar" onclick="toggleDropdown('profileDropdown')">A</div>
+        <div id="profileDropdown" class="dropdown-content">
+          <div class="dropdown-header">Admin Profile</div>
+          <a href="#" onclick="alert('Open Add Account Modal (To Be Implemented)')">➕ Add New Account</a>
+          <a href="#" onclick="alert('View Other Details')">⚙️ Other Details</a>
+          <a href="#" onclick="localStorage.removeItem('loggedIn'); window.location.href='login.html';">🚪 Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <div class="page-header">
+      <div class="page-header-left">
+        <h1>Trainers</h1>
+        <p id="trainerCount">Loading trainers...</p>
+      </div>
+      <button class="btn btn-primary" onclick="openAddTrainerModal()">➕ Add Trainer</button>
+    </div>
+
+    <!-- Filter Bar -->
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
+      <select class="filter-select" id="trainerStatusFilter">
+        <option value="">All Status</option>
+        <option value="Active">Active</option>
+        <option value="On Leave">On Leave</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+      <select class="filter-select" id="specializationFilter">
+        <option value="">All Specializations</option>
+        <option value="Strength & Conditioning">Strength & Conditioning</option>
+        <option value="Yoga & Flexibility">Yoga & Flexibility</option>
+        <option value="Cardio & HIIT">Cardio & HIIT</option>
+        <option value="Nutrition & Weight Loss">Nutrition & Weight Loss</option>
+      </select>
+    </div>
+
+    <!-- Trainers Grid -->
+    <div class="trainers-grid stagger-children" id="trainersGrid">
+      <div class="trainer-card skeleton" style="height:280px;"></div>
+      <div class="trainer-card skeleton" style="height:280px;"></div>
+      <div class="trainer-card skeleton" style="height:280px;"></div>
+      <div class="trainer-card skeleton" style="height:280px;"></div>
+    </div>
+
+  </main>
+</div>
+
+</div><!-- /page-wrapper -->
+
+<!-- ═══ ADD/EDIT TRAINER MODAL ═══════════════════════ -->
+<div class="modal-overlay" id="trainerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="trainerModalTitle">➕ Add New Trainer</span>
+      <button class="modal-close" onclick="Modal.close('trainerModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="trainerForm">
+        <input type="hidden" id="trainerId" />
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input type="text" id="trainerName" class="form-control" placeholder="Jane Smith" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input type="email" id="trainerEmail" class="form-control" placeholder="jane@gymfit.com" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" id="trainerPhone" class="form-control" placeholder="555-0200" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Specialization *</label>
+            <select id="trainerSpec" class="form-control" required>
+              <option value="">Select Specialization</option>
+              <option value="Strength & Conditioning">Strength & Conditioning</option>
+              <option value="Yoga & Flexibility">Yoga & Flexibility</option>
+              <option value="Cardio & HIIT">Cardio & HIIT</option>
+              <option value="Nutrition & Weight Loss">Nutrition & Weight Loss</option>
+              <option value="CrossFit">CrossFit</option>
+              <option value="Pilates">Pilates</option>
+              <option value="Boxing & MMA">Boxing & MMA</option>
+              <option value="Swimming">Swimming</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Experience (Years)</label>
+            <input type="number" id="trainerExp" class="form-control" placeholder="5" min="0" max="50" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Monthly Salary ($)</label>
+            <input type="number" id="trainerSalary" class="form-control" placeholder="3500" min="0" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Schedule</label>
+            <input type="text" id="trainerSchedule" class="form-control" placeholder="Mon-Fri 7AM-3PM" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('trainerModal')">Cancel</button>
+      <button class="btn btn-primary" id="submitTrainerBtn" onclick="submitTrainerForm()">Add Trainer</button>
+    </div>
+  </div>
+</div>
+
+<div id="toastContainer" class="toast-container"></div>
+
+<script src="js/app.js"></script>
+<script>
+let allTrainers = [];
+let editingTrainerId = null;
+
+function getRatingStars(r) {
+  const full = Math.floor(r);
+  const half = r % 1 >= 0.5;
+  return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
+}
+
+async function loadTrainers() {
+  const search = document.getElementById('trainerSearch')?.value || '';
+  const status = document.getElementById('trainerStatusFilter')?.value || '';
+  const spec   = document.getElementById('specializationFilter')?.value || '';
+  let query = '?';
+  if (search) query += `search=${encodeURIComponent(search)}&`;
+  if (status) query += `status=${status}&`;
+  if (spec)   query += `specialization=${encodeURIComponent(spec)}&`;
+
+  try {
+    const res = await fetch(`/api/trainers${query}`);
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message);
+    allTrainers = data.data;
+    renderTrainers(allTrainers);
+    document.getElementById('trainerCount').textContent = `${data.count} trainer${data.count !== 1 ? 's' : ''}`;
+  } catch (err) {
+    Toast.error('Failed to load trainers: ' + err.message);
+  }
+}
+
+function renderTrainers(trainers) {
+  const grid = document.getElementById('trainersGrid');
+  if (trainers.length === 0) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div class="empty-icon">🏋️</div><h3>No trainers found</h3></div>`;
+    return;
+  }
+  grid.innerHTML = trainers.map((t, i) => `
+    <div class="trainer-card animate-in" style="animation-delay:${i*0.08}s">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;">
+        <div class="trainer-avatar">${Format.initials(t.name)}</div>
+        <span class="badge ${t.status === 'Active' ? 'badge-success' : t.status === 'On Leave' ? 'badge-warning' : 'badge-muted'}">${t.status}</span>
+      </div>
+      <div class="trainer-name">${escapeHtml(t.name)}</div>
+      <div class="trainer-specialty">${t.specialization}</div>
+      <div style="font-size:13px;color:var(--warning);margin-top:4px;">${getRatingStars(t.rating)} ${t.rating}</div>
+
+      <div class="trainer-stats">
+        <div class="trainer-stat"><div class="val">${t.experience}yr</div><div class="lbl">Experience</div></div>
+        <div class="trainer-stat"><div class="val">${t.clients}</div><div class="lbl">Clients</div></div>
+        <div class="trainer-stat"><div class="val">$${t.salary}</div><div class="lbl">Salary</div></div>
+      </div>
+
+      <div style="font-size:12px;color:var(--text-muted);">📅 ${t.schedule || 'Not set'}</div>
+
+      <div class="trainer-certs">
+        ${(t.certifications || []).slice(0,3).map(c => `<span class="cert-tag">${c}</span>`).join('')}
+      </div>
+
+      <div class="trainer-actions">
+        <button class="btn btn-sm btn-outline w-full" onclick="openEditTrainer('${t.id}')">✏️ Edit</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteTrainer('${t.id}', '${escapeHtml(t.name)}')">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openAddTrainerModal() {
+  editingTrainerId = null;
+  document.getElementById('trainerForm').reset();
+  document.getElementById('trainerId').value = '';
+  document.getElementById('trainerModalTitle').textContent = '➕ Add New Trainer';
+  document.getElementById('submitTrainerBtn').textContent = 'Add Trainer';
+  Modal.open('trainerModal');
+}
+
+function openEditTrainer(id) {
+  const t = allTrainers.find(t => t.id === id);
+  if (!t) return;
+  editingTrainerId = id;
+  document.getElementById('trainerModalTitle').textContent = '✏️ Edit Trainer';
+  document.getElementById('submitTrainerBtn').textContent = 'Save Changes';
+  document.getElementById('trainerId').value = t.id;
+  document.getElementById('trainerName').value = t.name;
+  document.getElementById('trainerEmail').value = t.email;
+  document.getElementById('trainerPhone').value = t.phone || '';
+  document.getElementById('trainerSpec').value = t.specialization;
+  document.getElementById('trainerExp').value = t.experience || '';
+  document.getElementById('trainerSalary').value = t.salary || '';
+  document.getElementById('trainerSchedule').value = t.schedule || '';
+  Modal.open('trainerModal');
+}
+
+async function submitTrainerForm() {
+  const btn = document.getElementById('submitTrainerBtn');
+  btn.innerHTML = '<span class="spinner"></span> Saving...';
+  btn.disabled = true;
+
+  const payload = {
+    name:           document.getElementById('trainerName').value.trim(),
+    email:          document.getElementById('trainerEmail').value.trim(),
+    phone:          document.getElementById('trainerPhone').value.trim(),
+    specialization: document.getElementById('trainerSpec').value,
+    experience:     document.getElementById('trainerExp').value,
+    salary:         document.getElementById('trainerSalary').value,
+    schedule:       document.getElementById('trainerSchedule').value.trim()
+  };
+
+  if (!payload.name || !payload.email || !payload.specialization) {
+    Toast.error('Name, email, and specialization are required.');
+    btn.textContent = editingTrainerId ? 'Save Changes' : 'Add Trainer';
+    btn.disabled = false;
+    return;
+  }
+
+  try {
+    if (editingTrainerId) {
+      const res = await fetch(`/api/trainers/${editingTrainerId}`, {
+        method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      Toast.success('Trainer updated!');
+    } else {
+      const res = await fetch('/api/trainers', {
+        method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      Toast.success('Trainer added!');
+    }
+    Modal.close('trainerModal');
+    await loadTrainers();
+  } catch (err) {
+    Toast.error(err.message);
+  } finally {
+    btn.textContent = editingTrainerId ? 'Save Changes' : 'Add Trainer';
+    btn.disabled = false;
+  }
+}
+
+function deleteTrainer(id, name) {
+  showConfirm('Delete Trainer', `Remove <strong>${name}</strong> from the system?`, async () => {
+    try {
+      const res = await fetch(`/api/trainers/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      Toast.success(`Trainer "${name}" deleted.`);
+      await loadTrainers();
+    } catch (err) {
+      Toast.error(err.message);
+    }
+  });
+}
+
+function escapeHtml(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function debounce(fn, d=350) { let t; return (...a) => { clearTimeout(t); t=setTimeout(()=>fn(...a),d); }; }
+
+document.addEventListener('DOMContentLoaded', async () => {
+  loadTrainers();
+  document.getElementById('trainerSearch').addEventListener('input', debounce(loadTrainers));
+  document.getElementById('trainerStatusFilter').addEventListener('change', loadTrainers);
+  document.getElementById('specializationFilter').addEventListener('change', loadTrainers);
+
+  try {
+    const r = await fetch('/api/members/stats'); const d = await r.json();
+    if (d.success) document.getElementById('sidebarMemberCount').textContent = d.data.total;
+  } catch {}
+});
+</script>
+
+<!-- ─── Footer ─────────────────────────────────────── -->
+<footer class="site-footer" style="margin-left: var(--sidebar-width); transition: margin-left var(--transition);">
+  <div class="footer-content">
+    <div class="footer-bottom" style="padding:20px 0;">
+      <p>&copy; 2026 GymFit. All rights reserved. Built with 💪 by GymFit Team.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

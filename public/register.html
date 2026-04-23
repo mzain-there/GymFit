@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join GymFit — Member Registration</title>
+  <meta name="description" content="Register as a new GymFit member. Fill in your details and choose a plan to start your fitness journey today." />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- ─── Navigation ─────────────────────────────────── -->
+  <nav class="home-nav">
+    <div class="nav-logo">Gym<span>Fit</span></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#plans">Plans</a>
+      <a href="about.html">About</a>
+      <a href="register.html" class="btn btn-outline btn-sm active-link">Join Now</a>
+      <a href="login.html" class="btn btn-primary btn-sm">Admin Panel →</a>
+      <button class="topbar-btn" onclick="ThemeManager.toggle()" title="Toggle theme" style="margin-left:4px;">🌓</button>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()" title="Menu">☰</button>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()">
+    <div class="mobile-menu" onclick="event.stopPropagation()">
+      <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+      <a href="index.html" onclick="toggleMobileMenu()">Home</a>
+      <a href="index.html#services" onclick="toggleMobileMenu()">Services</a>
+      <a href="index.html#plans" onclick="toggleMobileMenu()">Plans</a>
+      <a href="about.html">About</a>
+      <a href="register.html">Join Now</a>
+      <a href="login.html">Admin Panel</a>
+    </div>
+  </div>
+
+  <!-- ─── Registration Section ───────────────────────── -->
+  <section class="register-section">
+    <div class="register-container">
+      <div class="register-header">
+        <div class="section-badge">🏆 Become a Member</div>
+        <h1>Start Your Fitness Journey</h1>
+        <p>Fill in your details below and we'll get you set up with your perfect plan</p>
+      </div>
+
+      <form id="registerForm" class="register-form" novalidate>
+        <!-- Progress Steps -->
+        <div class="form-progress">
+          <div class="progress-step active" data-step="1">
+            <div class="step-circle">1</div>
+            <span>Personal Info</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="2">
+            <div class="step-circle">2</div>
+            <span>Contact Details</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="3">
+            <div class="step-circle">3</div>
+            <span>Membership</span>
+          </div>
+        </div>
+
+        <!-- Step 1: Personal Information -->
+        <div class="form-step active" id="step1">
+          <h3 class="step-title">📋 Personal Information</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="regName">Full Name *</label>
+              <input type="text" id="regName" class="form-control" placeholder="Enter your full name" required />
+              <span class="form-error" id="regNameError"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regEmail">Email Address *</label>
+              <input type="email" id="regEmail" class="form-control" placeholder="you@example.com" required />
+              <span class="form-error" id="regEmailError"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regAge">Age *</label>
+              <input type="number" id="regAge" class="form-control" placeholder="Your age" min="10" max="100" required />
+              <span class="form-error" id="regAgeError"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regGender">Gender *</label>
+              <select id="regGender" class="form-control" required>
+                <option value="" disabled selected>Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              <span class="form-error" id="regGenderError"></span>
+            </div>
+          </div>
+          <div class="form-actions">
+            <span></span>
+            <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next Step →</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Contact Details -->
+        <div class="form-step" id="step2">
+          <h3 class="step-title">📞 Contact Details</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="regPhone">Phone Number *</label>
+              <input type="tel" id="regPhone" class="form-control" placeholder="e.g. 555-1234" required />
+              <span class="form-error" id="regPhoneError"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regEmergencyContact">Emergency Contact</label>
+              <input type="tel" id="regEmergencyContact" class="form-control" placeholder="Emergency phone number" />
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="regAddress">Address *</label>
+              <textarea id="regAddress" class="form-control" placeholder="Your full address" rows="3" required></textarea>
+              <span class="form-error" id="regAddressError"></span>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="prevStep(1)">← Back</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep(3)">Next Step →</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Membership Details -->
+        <div class="form-step" id="step3">
+          <h3 class="step-title">💳 Membership & Payment</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="regPlan">Membership Plan *</label>
+              <select id="regPlan" class="form-control" required>
+                <option value="" disabled selected>Select a plan</option>
+              </select>
+              <span class="form-error" id="regPlanError"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regPayment">Payment Status *</label>
+              <select id="regPayment" class="form-control" required>
+                <option value="Unpaid">Unpaid — Pay Later</option>
+                <option value="Paid">Paid — Completed</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regJoinDate">Join Date</label>
+              <input type="date" id="regJoinDate" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regExpiryDate">Expiry Date</label>
+              <input type="date" id="regExpiryDate" class="form-control" />
+            </div>
+          </div>
+
+          <!-- Payment Method Section -->
+          <div class="payment-method-section" id="paymentMethodSection">
+            <h4 class="payment-method-title">💰 Payment Method</h4>
+            <div class="payment-options">
+              <label class="payment-option">
+                <input type="radio" name="paymentMethod" value="cash" checked />
+                <div class="payment-option-card">
+                  <div class="payment-option-icon">💵</div>
+                  <div class="payment-option-info">
+                    <strong>Cash Payment</strong>
+                    <span>Pay at the reception desk</span>
+                  </div>
+                </div>
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="paymentMethod" value="card" />
+                <div class="payment-option-card">
+                  <div class="payment-option-icon">💳</div>
+                  <div class="payment-option-info">
+                    <strong>Card Payment</strong>
+                    <span>Credit or debit card</span>
+                  </div>
+                </div>
+              </label>
+            </div>
+
+            <!-- Card Details (shown when Card is selected) -->
+            <div class="card-details-box" id="cardDetailsBox" style="display:none;">
+              <div class="card-brands">
+                <span class="card-brand visa">VISA</span>
+                <span class="card-brand mastercard">MasterCard</span>
+                <span class="card-brand amex">AMEX</span>
+                <span class="card-brand discover">Discover</span>
+              </div>
+              <div class="form-grid" style="margin-top:16px;">
+                <div class="form-group full">
+                  <label class="form-label" for="cardNumber">Card Number</label>
+                  <input type="text" id="cardNumber" class="form-control" placeholder="•••• •••• •••• ••••" maxlength="19" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cardName">Cardholder Name</label>
+                  <input type="text" id="cardName" class="form-control" placeholder="Name on card" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cardExpiry">Expiry (MM/YY)</label>
+                  <input type="text" id="cardExpiry" class="form-control" placeholder="MM/YY" maxlength="5" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cardCVV">CVV</label>
+                  <input type="password" id="cardCVV" class="form-control" placeholder="•••" maxlength="4" />
+                </div>
+              </div>
+              <p class="card-secure-note">🔒 Your card information is secure and encrypted</p>
+            </div>
+          </div>
+
+          <!-- Plan Preview Card -->
+          <div class="plan-preview" id="planPreview" style="display:none;">
+            <div class="plan-preview-header">Selected Plan</div>
+            <div class="plan-preview-body">
+              <div class="plan-preview-name" id="previewPlanName">—</div>
+              <div class="plan-preview-price" id="previewPlanPrice">—</div>
+              <div class="plan-preview-features" id="previewPlanFeatures"></div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
+            <button type="submit" class="btn btn-primary btn-glow" id="submitBtn">
+              🚀 Register as Member
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Success State -->
+      <div class="register-success" id="registerSuccess" style="display:none;">
+        <div class="success-icon">🎉</div>
+        <h2>Welcome to GymFit!</h2>
+        <p>You have been successfully registered as a member.</p>
+        <div class="success-details" id="successDetails"></div>
+        <div class="hero-cta" style="margin-top:32px;">
+          <a href="index.html" class="btn btn-primary btn-hero">← Back to Home</a>
+          <a href="register.html" class="btn btn-secondary btn-hero">Register Another</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="footer-logo">Gym<span>Fit</span></div>
+          <p class="footer-tagline">Unleash your inner champion. Premium fitness experience since 2021.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-link" title="Facebook">📘</a>
+            <a href="#" class="social-link" title="Instagram">📸</a>
+            <a href="#" class="social-link" title="Twitter">🐦</a>
+            <a href="#" class="social-link" title="YouTube">📺</a>
+          </div>
+        </div>
+        <div class="footer-links-group">
+          <h4>Quick Links</h4>
+          <a href="index.html">Home</a>
+          <a href="index.html#services">Services</a>
+          <a href="index.html#plans">Plans</a>
+          <a href="about.html">About Us</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Membership</h4>
+          <a href="register.html">Join Now</a>
+          <a href="index.html#plans">View Plans</a>
+          <a href="login.html">Admin Login</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Contact Info</h4>
+          <p>📍 123 Fitness Avenue, Gym City</p>
+          <p>📞 +1 (555) 123-4567</p>
+          <p>✉️ info@gymfit.com</p>
+          <p>⏰ Open 24/7</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 GymFit. All rights reserved. Built with 💪 by GymFit Team.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    let plansData = [];
+    let currentStep = 1;
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const overlay = document.getElementById('mobileMenuOverlay');
+      overlay.classList.toggle('active');
+      document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Set default join date to today
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('regJoinDate').value = today;
+
+      // Load plans dynamically
+      try {
+        const res = await fetch('/api/plans');
+        const data = await res.json();
+        if (data.success) {
+          plansData = data.data;
+          const planSelect = document.getElementById('regPlan');
+          plansData.forEach(plan => {
+            const opt = document.createElement('option');
+            opt.value = plan.name;
+            opt.textContent = `${plan.name} — $${plan.price}/${plan.billingCycle === 'Monthly' ? 'mo' : 'yr'}`;
+            planSelect.appendChild(opt);
+          });
+        }
+      } catch (err) {
+        console.error('Failed to load plans:', err);
+      }
+
+      // Plan selection preview
+      document.getElementById('regPlan').addEventListener('change', function () {
+        const plan = plansData.find(p => p.name === this.value);
+        const preview = document.getElementById('planPreview');
+        if (plan) {
+          document.getElementById('previewPlanName').textContent = plan.name;
+          document.getElementById('previewPlanPrice').textContent = `$${plan.price}/${plan.billingCycle === 'Monthly' ? 'mo' : 'yr'}`;
+          document.getElementById('previewPlanFeatures').innerHTML = plan.features.map(f => `<span class="preview-feature">✓ ${f}</span>`).join('');
+          preview.style.display = 'block';
+
+          // Auto-calculate expiry date
+          const joinDate = document.getElementById('regJoinDate').value;
+          if (joinDate) {
+            const expiry = new Date(joinDate);
+            if (plan.billingCycle === 'Monthly') {
+              expiry.setMonth(expiry.getMonth() + parseInt(plan.duration));
+            } else {
+              expiry.setFullYear(expiry.getFullYear() + 1);
+            }
+            document.getElementById('regExpiryDate').value = expiry.toISOString().split('T')[0];
+          }
+        } else {
+          preview.style.display = 'none';
+        }
+      });
+
+      // Payment method toggle (cash vs card)
+      document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+          const cardBox = document.getElementById('cardDetailsBox');
+          cardBox.style.display = this.value === 'card' ? 'block' : 'none';
+        });
+      });
+
+      // Card number formatting (auto-add spaces)
+      const cardInput = document.getElementById('cardNumber');
+      if (cardInput) {
+        cardInput.addEventListener('input', function (e) {
+          let val = this.value.replace(/\D/g, '').substring(0, 16);
+          let formatted = val.match(/.{1,4}/g)?.join(' ') || val;
+          this.value = formatted;
+        });
+      }
+
+      // Card expiry formatting
+      const expiryInput = document.getElementById('cardExpiry');
+      if (expiryInput) {
+        expiryInput.addEventListener('input', function () {
+          let val = this.value.replace(/\D/g, '').substring(0, 4);
+          if (val.length >= 3) val = val.substring(0, 2) + '/' + val.substring(2);
+          this.value = val;
+        });
+      }
+
+      // Form submission
+      document.getElementById('registerForm').addEventListener('submit', handleRegistration);
+    });
+
+    function nextStep(step) {
+      // Validate current step before proceeding
+      if (!validateStep(currentStep)) return;
+      showStep(step);
+    }
+
+    function prevStep(step) {
+      showStep(step);
+    }
+
+    function showStep(step) {
+      document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+      document.getElementById(`step${step}`).classList.add('active');
+
+      document.querySelectorAll('.progress-step').forEach(s => {
+        const sNum = parseInt(s.dataset.step);
+        s.classList.remove('active', 'completed');
+        if (sNum < step) s.classList.add('completed');
+        if (sNum === step) s.classList.add('active');
+      });
+
+      currentStep = step;
+    }
+
+    function validateStep(step) {
+      let valid = true;
+
+      if (step === 1) {
+        const name = document.getElementById('regName');
+        const email = document.getElementById('regEmail');
+        const age = document.getElementById('regAge');
+        const gender = document.getElementById('regGender');
+
+        if (!name.value.trim()) { showFieldError('regNameError', 'Name is required'); valid = false; }
+        else clearFieldError('regNameError');
+
+        if (!email.value.trim() || !email.value.includes('@')) { showFieldError('regEmailError', 'Valid email is required'); valid = false; }
+        else clearFieldError('regEmailError');
+
+        if (!age.value || age.value < 10 || age.value > 100) { showFieldError('regAgeError', 'Age must be between 10-100'); valid = false; }
+        else clearFieldError('regAgeError');
+
+        if (!gender.value) { showFieldError('regGenderError', 'Please select gender'); valid = false; }
+        else clearFieldError('regGenderError');
+      }
+
+      if (step === 2) {
+        const phone = document.getElementById('regPhone');
+        const address = document.getElementById('regAddress');
+
+        if (!phone.value.trim()) { showFieldError('regPhoneError', 'Phone number is required'); valid = false; }
+        else clearFieldError('regPhoneError');
+
+        if (!address.value.trim()) { showFieldError('regAddressError', 'Address is required'); valid = false; }
+        else clearFieldError('regAddressError');
+      }
+
+      if (step === 3) {
+        const plan = document.getElementById('regPlan');
+        if (!plan.value) { showFieldError('regPlanError', 'Please select a plan'); valid = false; }
+        else clearFieldError('regPlanError');
+      }
+
+      return valid;
+    }
+
+    function showFieldError(id, msg) {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = msg; el.style.display = 'block'; }
+    }
+
+    function clearFieldError(id) {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = ''; el.style.display = 'none'; }
+    }
+
+    async function handleRegistration(e) {
+      e.preventDefault();
+
+      if (!validateStep(3)) return;
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<div class="spinner" style="width:16px;height:16px;margin-right:8px;"></div> Registering...';
+
+      const memberData = {
+        name: document.getElementById('regName').value.trim(),
+        email: document.getElementById('regEmail').value.trim(),
+        phone: document.getElementById('regPhone').value.trim(),
+        age: parseInt(document.getElementById('regAge').value),
+        gender: document.getElementById('regGender').value,
+        address: document.getElementById('regAddress').value.trim(),
+        membershipPlan: document.getElementById('regPlan').value,
+        paymentStatus: document.getElementById('regPayment').value,
+        joinDate: document.getElementById('regJoinDate').value,
+        expiryDate: document.getElementById('regExpiryDate').value,
+        status: 'Active'
+      };
+
+      try {
+        const res = await fetch('/api/members', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(memberData)
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          // Show success state
+          document.getElementById('registerForm').style.display = 'none';
+          const successDiv = document.getElementById('registerSuccess');
+          successDiv.style.display = 'block';
+          document.getElementById('successDetails').innerHTML = `
+            <div class="success-info-grid">
+              <div class="success-info-item">
+                <span class="label">Name</span>
+                <span class="value">${data.data.name}</span>
+              </div>
+              <div class="success-info-item">
+                <span class="label">Email</span>
+                <span class="value">${data.data.email}</span>
+              </div>
+              <div class="success-info-item">
+                <span class="label">Plan</span>
+                <span class="value">${data.data.membershipPlan}</span>
+              </div>
+              <div class="success-info-item">
+                <span class="label">Member ID</span>
+                <span class="value">${data.data.id}</span>
+              </div>
+              <div class="success-info-item">
+                <span class="label">Status</span>
+                <span class="value badge badge-success">${data.data.status}</span>
+              </div>
+              <div class="success-info-item">
+                <span class="label">Payment</span>
+                <span class="value badge ${data.data.paymentStatus === 'Paid' ? 'badge-success' : 'badge-danger'}">${data.data.paymentStatus}</span>
+              </div>
+            </div>
+          `;
+          Toast.success('Registration successful! Welcome to GymFit! 🎉');
+        } else {
+          Toast.error(data.message || 'Registration failed. Please try again.');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '🚀 Register as Member';
+        }
+      } catch (err) {
+        Toast.error('Network error. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '🚀 Register as Member';
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — GymFit Premium Fitness Center</title>
+  <meta name="description" content="Learn about GymFit — our mission, vision, history, and the team behind the premium fitness experience. Join us and transform your life." />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- ─── Navigation ─────────────────────────────────── -->
+  <nav class="home-nav">
+    <div class="nav-logo">Gym<span>Fit</span></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#plans">Plans</a>
+      <a href="about.html" class="active-link">About</a>
+      <a href="register.html" class="btn btn-outline btn-sm">Join Now</a>
+      <a href="login.html" class="btn btn-primary btn-sm">Admin Panel →</a>
+      <button class="topbar-btn" onclick="ThemeManager.toggle()" title="Toggle theme" style="margin-left:4px;">🌓</button>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()" title="Menu">☰</button>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()">
+    <div class="mobile-menu" onclick="event.stopPropagation()">
+      <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+      <a href="index.html" onclick="toggleMobileMenu()">Home</a>
+      <a href="index.html#services" onclick="toggleMobileMenu()">Services</a>
+      <a href="index.html#plans" onclick="toggleMobileMenu()">Plans</a>
+      <a href="about.html">About</a>
+      <a href="register.html">Join Now</a>
+      <a href="login.html">Admin Panel</a>
+    </div>
+  </div>
+
+  <!-- ─── About Hero ─────────────────────────────────── -->
+  <section class="about-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-lines"></div>
+    <div class="about-hero-content">
+      <div class="section-badge">🏢 About GymFit</div>
+      <h1>Our Story, Your <span class="accent">Transformation</span></h1>
+      <p>Since 2021, we've been empowering fitness enthusiasts with world-class facilities and expert guidance</p>
+    </div>
+  </section>
+
+  <!-- ─── Mission & Vision ───────────────────────────── -->
+  <section class="about-section">
+    <div class="about-content-wrap">
+      <div class="about-grid">
+        <div class="about-card mission-card">
+          <div class="about-card-icon">🎯</div>
+          <h3>Our Mission</h3>
+          <p>To provide a world-class fitness experience that empowers individuals to achieve their health and wellness goals through innovative training methods, state-of-the-art equipment, and a supportive community environment.</p>
+        </div>
+        <div class="about-card vision-card">
+          <div class="about-card-icon">🔭</div>
+          <h3>Our Vision</h3>
+          <p>To become the most trusted and respected fitness brand globally — creating a movement that transforms millions of lives through the power of discipline, consistency, and community-driven wellness.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Stats Section ──────────────────────────────── -->
+  <section class="about-stats-section">
+    <div class="about-stats-grid stagger-children">
+      <div class="about-stat-card">
+        <div class="about-stat-num">500+</div>
+        <div class="about-stat-label">Happy Members</div>
+        <div class="about-stat-icon">👥</div>
+      </div>
+      <div class="about-stat-card">
+        <div class="about-stat-num">15+</div>
+        <div class="about-stat-label">Certified Trainers</div>
+        <div class="about-stat-icon">🏋️</div>
+      </div>
+      <div class="about-stat-card">
+        <div class="about-stat-num">50+</div>
+        <div class="about-stat-label">Weekly Classes</div>
+        <div class="about-stat-icon">📅</div>
+      </div>
+      <div class="about-stat-card">
+        <div class="about-stat-num">5</div>
+        <div class="about-stat-label">Years of Excellence</div>
+        <div class="about-stat-icon">⭐</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Our Values ─────────────────────────────────── -->
+  <section class="about-values-section">
+    <div class="section-header">
+      <div class="section-badge">💎 Our Core Values</div>
+      <h2>What Drives Us Every Day</h2>
+      <p>The principles that shape everything we do</p>
+    </div>
+    <div class="values-grid stagger-children">
+      <div class="value-card">
+        <div class="value-icon">🔥</div>
+        <h3>Passion</h3>
+        <p>We live and breathe fitness. Our passion fuels everything we do, from selecting equipment to designing programs.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🤝</div>
+        <h3>Integrity</h3>
+        <p>Honest guidance, transparent pricing, and genuine care for every member who walks through our doors.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🚀</div>
+        <h3>Innovation</h3>
+        <p>Constantly evolving our methods, technology, and facilities to stay at the forefront of fitness science.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">💪</div>
+        <h3>Empowerment</h3>
+        <p>We believe in empowering every individual to be the best version of themselves — inside and outside the gym.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🌟</div>
+        <h3>Excellence</h3>
+        <p>We strive for excellence in every aspect — from our equipment to our coaching to our member experience.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">👨‍👩‍👧‍👦</div>
+        <h3>Community</h3>
+        <p>Building a supportive community where every member feels welcomed, valued, and motivated to succeed.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Our Team ───────────────────────────────────── -->
+  <section class="about-team-section">
+    <div class="section-header">
+      <div class="section-badge">👥 Meet The Team</div>
+      <h2>The People Behind GymFit</h2>
+      <p>Dedicated professionals committed to your fitness success</p>
+    </div>
+    <div class="team-grid stagger-children">
+      <div class="team-card">
+        <div class="team-avatar">JD</div>
+        <h4>John Davidson</h4>
+        <span class="team-role">Founder & CEO</span>
+        <p>15+ years in fitness industry. Former competitive bodybuilder with a passion for community wellness.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">SK</div>
+        <h4>Sarah Kim</h4>
+        <span class="team-role">Head Trainer</span>
+        <p>NASM Certified. Specializes in strength & conditioning, HIIT, and rehabilitation training.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">MR</div>
+        <h4>Mike Rodriguez</h4>
+        <span class="team-role">Nutrition Director</span>
+        <p>Registered dietitian with expertise in sports nutrition, meal planning, and supplement guidance.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">AL</div>
+        <h4>Ayesha Lopez</h4>
+        <span class="team-role">Yoga Instructor</span>
+        <p>500-hour RYT certified. Brings mindfulness and flexibility training to our wellness programs.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Facilities ─────────────────────────────────── -->
+  <section class="about-facilities-section">
+    <div class="section-header">
+      <div class="section-badge">🏢 Our Facilities</div>
+      <h2>World-Class Gym Facilities</h2>
+      <p>Everything you need for the ultimate fitness experience</p>
+    </div>
+    <div class="facilities-grid stagger-children">
+      <div class="facility-card">
+        <div class="facility-icon">🏋️</div>
+        <h4>Weight Training Zone</h4>
+        <p>10,000 sq ft dedicated to free weights, dumbbells, barbells, and resistance machines.</p>
+      </div>
+      <div class="facility-card">
+        <div class="facility-icon">🏃</div>
+        <h4>Cardio Floor</h4>
+        <p>30+ treadmills, ellipticals, bikes, and rowing machines with personal entertainment screens.</p>
+      </div>
+      <div class="facility-card">
+        <div class="facility-icon">🧘</div>
+        <h4>Yoga Studio</h4>
+        <p>Peaceful, climate-controlled studio for yoga, Pilates, and meditation sessions.</p>
+      </div>
+      <div class="facility-card">
+        <div class="facility-icon">🥊</div>
+        <h4>Boxing Ring</h4>
+        <p>Professional boxing ring with heavy bags, speed bags, and MMA training area.</p>
+      </div>
+      <div class="facility-card">
+        <div class="facility-icon">🧖</div>
+        <h4>Spa & Sauna</h4>
+        <p>Relax post-workout with our sauna, steam room, and cold plunge facilities.</p>
+      </div>
+      <div class="facility-card">
+        <div class="facility-icon">🍹</div>
+        <h4>Juice Bar</h4>
+        <p>Refuel with fresh smoothies, protein shakes, and healthy snacks at our in-house juice bar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Operating Hours ────────────────────────────── -->
+  <section class="about-hours-section">
+    <div class="about-content-wrap">
+      <div class="hours-card">
+        <div class="hours-left">
+          <h3>⏰ Operating Hours</h3>
+          <p>We're open 24/7 so you can train on your schedule</p>
+        </div>
+        <div class="hours-right">
+          <div class="hours-row">
+            <span class="hours-day">Monday — Friday</span>
+            <span class="hours-time">24 Hours</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Saturday</span>
+            <span class="hours-time">24 Hours</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Sunday</span>
+            <span class="hours-time">24 Hours</span>
+          </div>
+          <div class="hours-row highlight">
+            <span class="hours-day">Holidays</span>
+            <span class="hours-time">Open (Modified Hours)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ────────────────────────────────────────── -->
+  <section class="cta-banner">
+    <div class="cta-banner-bg"></div>
+    <div class="cta-banner-content">
+      <h2>Ready to Begin Your Journey?</h2>
+      <p>Join the GymFit family today and experience fitness like never before</p>
+      <div class="hero-cta">
+        <a href="register.html" class="btn btn-primary btn-hero btn-glow">🏆 Join Now</a>
+        <a href="index.html" class="btn btn-secondary btn-hero">← Back to Home</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="footer-logo">Gym<span>Fit</span></div>
+          <p class="footer-tagline">Unleash your inner champion. Premium fitness experience since 2021.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-link" title="Facebook">📘</a>
+            <a href="#" class="social-link" title="Instagram">📸</a>
+            <a href="#" class="social-link" title="Twitter">🐦</a>
+            <a href="#" class="social-link" title="YouTube">📺</a>
+          </div>
+        </div>
+        <div class="footer-links-group">
+          <h4>Quick Links</h4>
+          <a href="index.html">Home</a>
+          <a href="index.html#services">Services</a>
+          <a href="index.html#plans">Plans</a>
+          <a href="about.html">About Us</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Membership</h4>
+          <a href="register.html">Join Now</a>
+          <a href="index.html#plans">View Plans</a>
+          <a href="login.html">Admin Login</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Contact Info</h4>
+          <p>📍 123 Fitness Avenue, Gym City</p>
+          <p>📞 +1 (555) 123-4567</p>
+          <p>✉️ info@gymfit.com</p>
+          <p>⏰ Open 24/7</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 GymFit. All rights reserved. Built with 💪 by GymFit Team.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const overlay = document.getElementById('mobileMenuOverlay');
+      overlay.classList.toggle('active');
+      document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+    }
+  </script>
+</body>
+
+</html>

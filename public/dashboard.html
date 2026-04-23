@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — GymFit Admin</title>
+  <meta name="description" content="GymFit admin dashboard with real-time stats, member overview, and expiry alerts." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="page-wrapper">
+
+<!-- ═══ SIDEBAR ══════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🏋️</div>
+    <div class="logo-text">Gym<span>Fit</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a>
+    <a href="dashboard.html" class="nav-item active"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+    <div class="nav-section-label">Management</div>
+    <a href="members.html" class="nav-item"><span class="nav-icon">👥</span><span class="nav-label">Members</span><span class="nav-badge" id="sidebarMemberCount">—</span></a>
+    <a href="trainers.html" class="nav-item"><span class="nav-icon">🏋️</span><span class="nav-label">Trainers</span></a>
+    <a href="plans.html" class="nav-item"><span class="nav-icon">💳</span><span class="nav-label">Plans</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="sidebar-toggle" onclick="Sidebar.toggle()">
+      <span id="sidebarToggleIcon">←</span>
+      <span class="nav-label">Collapse</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══ MAIN CONTENT ═════════════════════════════════ -->
+<div class="main-content" id="mainContent">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <button class="topbar-btn" onclick="Sidebar.toggle()" title="Toggle sidebar">☰</button>
+    <span class="topbar-title">Dashboard</span>
+    <div class="topbar-actions">
+      <button class="topbar-btn" onclick="ThemeManager.toggle()" title="Toggle theme" id="themeToggle">🌓</button>
+      
+      <div class="dropdown">
+        <button class="topbar-btn" id="alertsBtn" title="Alerts" onclick="toggleDropdown('alertsDropdown')">
+          🔔<span class="notification-dot"></span>
+        </button>
+        <div id="alertsDropdown" class="dropdown-content">
+          <div class="dropdown-header">System Notifications</div>
+          <a href="#">⚠️ Member John Doe expired today</a>
+          <a href="#">✅ New plan "Annual Premium" created</a>
+          <a href="#">💰 Payment due for Alice</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <div class="topbar-avatar" onclick="toggleDropdown('profileDropdown')">A</div>
+        <div id="profileDropdown" class="dropdown-content">
+          <div class="dropdown-header">Admin Profile</div>
+          <a href="#" onclick="alert('Open Add Account Modal (To Be Implemented)')">➕ Add New Account</a>
+          <a href="#" onclick="alert('View Other Details')">⚙️ Other Details</a>
+          <a href="#" onclick="localStorage.removeItem('loggedIn'); window.location.href='login.html';">🚪 Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <div class="page-header">
+      <div class="page-header-left">
+        <h1>Dashboard Overview</h1>
+        <p>Welcome back, Admin! Here's what's happening at your gym.</p>
+      </div>
+      <a href="members.html" class="btn btn-primary">➕ Add Member</a>
+    </div>
+
+    <!-- ─ Stats Cards ───────────────────────────── -->
+    <div class="stats-grid stagger-children" id="statsGrid">
+      <div class="stat-card skeleton" style="height:100px;"></div>
+      <div class="stat-card skeleton" style="height:100px;"></div>
+      <div class="stat-card skeleton" style="height:100px;"></div>
+      <div class="stat-card skeleton" style="height:100px;"></div>
+      <div class="stat-card skeleton" style="height:100px;"></div>
+    </div>
+
+    <!-- ─ Main Grid ─────────────────────────────── -->
+    <div class="dashboard-grid">
+
+      <!-- Recent Members -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title"><span class="icon">👥</span> Recent Members</span>
+          <a href="members.html" class="btn btn-sm btn-secondary">View All →</a>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Member</th>
+                <th>Plan</th>
+                <th>Status</th>
+                <th>Payment</th>
+                <th>Expiry</th>
+              </tr>
+            </thead>
+            <tbody id="recentMembersBody">
+              <tr><td colspan="5"><div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div style="display:flex;flex-direction:column;gap:24px;">
+
+        <!-- Expiry Alerts -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><span class="icon">⚠️</span> Expiring Soon</span>
+          </div>
+          <div class="card-body" id="expiryAlerts">
+            <div class="spinner" style="margin:0 auto;display:flex;justify-content:center;"></div>
+          </div>
+        </div>
+
+        <!-- Plan Breakdown -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><span class="icon">📈</span> Plan Breakdown</span>
+          </div>
+          <div class="card-body" id="planBreakdown">
+            <div class="spinner" style="margin:0 auto;display:flex;justify-content:center;"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─ Alerts Panel ───────────────────────────── -->
+    <div style="margin-top:24px;">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title"><span class="icon">🔔</span> System Notifications</span>
+        </div>
+        <div class="alerts-panel" id="alertsPanel">
+          <div style="padding:24px;text-align:center;"><div class="spinner" style="margin:0 auto;"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div><!-- /main-content -->
+</div><!-- /page-wrapper -->
+
+<div id="toastContainer" class="toast-container"></div>
+
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadDashboard();
+});
+
+async function loadDashboard() {
+  try {
+    const [statsRes, membersRes] = await Promise.all([
+      fetch('/api/members/stats').then(r => r.json()),
+      fetch('/api/members').then(r => r.json())
+    ]);
+
+    if (statsRes.success) renderStats(statsRes.data);
+    if (membersRes.success) renderDashboardData(membersRes.data, statsRes.data);
+
+    // Update sidebar badge
+    if (statsRes.success) {
+      document.getElementById('sidebarMemberCount').textContent = statsRes.data.total;
+    }
+
+  } catch (err) {
+    Toast.error('Failed to load dashboard data.');
+    console.error(err);
+  }
+}
+
+function renderStats(stats) {
+  const cards = [
+    { label: 'Total Members',   value: stats.total,             icon: '👥', color: '#00e599', iconBg: 'rgba(0,229,153,0.12)',   change: '+2 this month', dir: 'up' },
+    { label: 'Active Members',  value: stats.active,            icon: '✅', color: '#10b981', iconBg: 'rgba(16,185,129,0.12)',   change: `${stats.active}/${stats.total} active`, dir: 'up' },
+    { label: 'Expired Members', value: stats.expired,           icon: '⚠️', color: '#f59e0b', iconBg: 'rgba(245,158,11,0.12)',   change: 'Need renewal', dir: 'down' },
+    { label: 'Unpaid Members',  value: stats.unpaid,            icon: '💰', color: '#ff4757', iconBg: 'rgba(255,71,87,0.12)',    change: 'Pending payment', dir: 'down' },
+    { label: 'Expiring (30d)',  value: stats.expiringThisMonth, icon: '⏰', color: '#a855f7', iconBg: 'rgba(168,85,247,0.12)',   change: 'Send reminders', dir: 'down' },
+  ];
+
+  document.getElementById('statsGrid').innerHTML = cards.map(c => `
+    <div class="stat-card animate-in" style="--card-color:${c.color}">
+      <div class="stat-icon" style="background:${c.iconBg}">${c.icon}</div>
+      <div class="stat-info">
+        <div class="stat-value" data-target="${c.value}">0</div>
+        <div class="stat-label">${c.label}</div>
+        <div class="stat-change ${c.dir}">${c.change}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Animate counters
+  document.querySelectorAll('.stat-value[data-target]').forEach(el => {
+    animateCounter(el, parseInt(el.dataset.target));
+  });
+}
+
+function renderDashboardData(members, stats) {
+  // Recent Members Table
+  const recent = [...members].slice(0, 6);
+  document.getElementById('recentMembersBody').innerHTML = recent.length
+    ? recent.map((m, i) => {
+        const days = Format.daysUntil(m.expiryDate);
+        return `
+          <tr class="animate-in" style="animation-delay:${i*0.06}s">
+            <td>
+              <div class="member-info">
+                <div class="table-avatar">${Format.initials(m.name)}</div>
+                <div>
+                  <div class="member-name">${escapeHtml(m.name)}</div>
+                  <div class="member-email">${m.email}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="badge ${Format.planBadgeClass(m.membershipPlan)}">${m.membershipPlan}</span></td>
+            <td><span class="badge ${Format.statusBadgeClass(m.status)}">${m.status}</span></td>
+            <td><span class="badge ${Format.paymentBadgeClass(m.paymentStatus)}">${m.paymentStatus}</span></td>
+            <td style="font-size:13px;${days>=0&&days<=30?'color:var(--warning);font-weight:600;':''}">${Format.date(m.expiryDate)}</td>
+          </tr>`;
+      }).join('')
+    : '<tr><td colspan="5"><div class="empty-state"><h3>No members yet</h3></div></td></tr>';
+
+  // Expiry Alerts
+  const expiring = members
+    .filter(m => { const d = Format.daysUntil(m.expiryDate); return d >= 0 && d <= 30; })
+    .sort((a,b) => new Date(a.expiryDate) - new Date(b.expiryDate));
+
+  const expiryEl = document.getElementById('expiryAlerts');
+  if (expiring.length === 0) {
+    expiryEl.innerHTML = '<div class="empty-state" style="padding:32px 20px;"><div class="empty-icon" style="font-size:32px;">✅</div><h3>No Expiries Soon</h3></div>';
+  } else {
+    expiryEl.innerHTML = `<div class="expiry-list">${expiring.slice(0,5).map(m => {
+      const d = Format.daysUntil(m.expiryDate);
+      return `
+        <div class="expiry-item">
+          <div class="table-avatar" style="width:32px;height:32px;font-size:12px;">${Format.initials(m.name)}</div>
+          <div class="expiry-info">
+            <div class="name">${escapeHtml(m.name)}</div>
+            <div class="date">${m.membershipPlan} · ${Format.date(m.expiryDate)}</div>
+          </div>
+          <span class="expiry-days">${d === 0 ? 'Today!' : `${d}d`}</span>
+        </div>`;
+    }).join('')}</div>`;
+  }
+
+  // Plan Breakdown
+  const planBreakdown = stats.planBreakdown;
+  const planColors = { Basic: '#6366f1', Premium: '#00e599', Elite: '#f59e0b', 'Annual Basic': '#a855f7' };
+  document.getElementById('planBreakdown').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      ${Object.entries(planBreakdown).map(([plan, count]) => {
+        const pct = stats.total > 0 ? Math.round((count / stats.total) * 100) : 0;
+        return `
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:13px;font-weight:600;">${plan}</span>
+              <span style="font-size:12px;color:var(--text-muted);">${count} (${pct}%)</span>
+            </div>
+            <div style="height:8px;background:var(--bg-input);border-radius:99px;overflow:hidden;">
+              <div style="height:100%;width:${pct}%;background:${planColors[plan]||'var(--primary)'};border-radius:99px;transition:width 1s ease;"></div>
+            </div>
+          </div>`;
+      }).join('')}
+    </div>`;
+
+  // Alerts Panel
+  const alerts = [];
+  if (stats.unpaid > 0) alerts.push({ type:'warning', title:`${stats.unpaid} Unpaid Memberships`, desc:'Send payment reminders', time:'Now' });
+  if (stats.expired > 0) alerts.push({ type:'danger', title:`${stats.expired} Expired Memberships`, desc:'Contact members to renew', time:'Now' });
+  if (stats.expiringThisMonth > 0) alerts.push({ type:'info', title:`${stats.expiringThisMonth} Expiring in 30 Days`, desc:'Proactively reach out to members', time:'This month' });
+  alerts.push({ type:'success', title:`${stats.active} Active Members`, desc:'All active members are in good standing', time:'Today' });
+
+  document.getElementById('alertsPanel').innerHTML = alerts.map(a => `
+    <div class="alert-item">
+      <div class="alert-dot ${a.type}"></div>
+      <div class="alert-text">
+        <div class="title">${a.title}</div>
+        <div class="desc">${a.desc}</div>
+      </div>
+      <div class="alert-time">${a.time}</div>
+    </div>`).join('');
+}
+
+function escapeHtml(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+
+<!-- ─── Footer ─────────────────────────────────────── -->
+<footer class="site-footer" style="margin-left: var(--sidebar-width); transition: margin-left var(--transition);">
+  <div class="footer-content">
+    <div class="footer-bottom" style="padding:20px 0;">
+      <p>&copy; 2026 GymFit. All rights reserved. Built with 💪 by GymFit Team.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+[
+  {
+    "id": "plan-001",
+    "name": "Basic",
+    "price": 29.99,
+    "duration": "1 Month",
+    "billingCycle": "Monthly",
+    "features": ["Gym Access", "Locker Room", "Basic Equipment", "2 Group Classes/Month"],
+    "color": "#6366f1",
+    "popular": false,
+    "description": "Perfect for beginners just starting their fitness journey."
+  },
+  {
+    "id": "plan-002",
+    "name": "Premium",
+    "price": 59.99,
+    "duration": "1 Month",
+    "billingCycle": "Monthly",
+    "features": ["All Basic Features", "Unlimited Group Classes", "Sauna & Steam Room", "1 Personal Training Session", "Nutrition Consultation", "Guest Passes x2"],
+    "color": "#10b981",
+    "popular": true,
+    "description": "Our most popular plan with unlimited access and premium amenities."
+  },
+  {
+    "id": "plan-003",
+    "name": "Elite",
+    "price": 99.99,
+    "duration": "1 Month",
+    "billingCycle": "Monthly",
+    "features": ["All Premium Features", "4 Personal Training Sessions", "Monthly Body Assessment", "Priority Booking", "Towel Service", "Protein Shakes Included", "24/7 Access"],
+    "color": "#f59e0b",
+    "popular": false,
+    "description": "The ultimate fitness experience with personal training and exclusive perks."
+  },
+  {
+    "id": "plan-004",
+    "name": "Annual Basic",
+    "price": 299.99,
+    "duration": "12 Months",
+    "billingCycle": "Annually",
+    "features": ["All Basic Monthly Features", "Save $60 vs Monthly", "Free Registration", "Online Workout Library"],
+    "color": "#8b5cf6",
+    "popular": false,
+    "description": "Save big with our annual basic plan — commit to your fitness goals."
+  },
+  {
+    "id": "plan-005",
+    "name": "Annual Premium",
+    "price": 599.99,
+    "duration": "12 Months",
+    "billingCycle": "Annually",
+    "features": ["All Premium Features", "Save $120 vs Monthly", "2 Free Personal Training Sessions", "Priority Support"],
+    "color": "#ec4899",
+    "popular": false,
+    "description": "The best value for our premium experience. Commit for a year and save."
+  },
+  {
+    "id": "plan-006",
+    "name": "Family Plan",
+    "price": 149.99,
+    "duration": "1 Month",
+    "billingCycle": "Monthly",
+    "features": ["Up to 4 Family Members", "All Basic Features", "Family Locker Room Access", "Weekend Kids Club"],
+    "color": "#14b8a6",
+    "popular": false,
+    "description": "Fitness for the whole family. Bring up to 4 members under one convenient plan."
+  }
+]

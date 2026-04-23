@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GymFit — Premium Fitness & Gym Management</title>
+  <meta name="description"
+    content="GymFit is an elite fitness center offering world-class gym facilities, personal training, and flexible membership plans. Join the VIP fitness experience today." />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- ─── Navigation ─────────────────────────────────── -->
+  <nav class="home-nav">
+    <div class="nav-logo">Gym<span>Fit</span></div>
+    <div class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="#services">Services</a>
+      <a href="#plans">Plans</a>
+      <a href="about.html">About</a>
+      <a href="register.html" class="btn btn-outline btn-sm">Join Now</a>
+      <a href="login.html" class="btn btn-primary btn-sm">Admin Panel →</a>
+      <button class="topbar-btn" onclick="ThemeManager.toggle()" title="Toggle theme" style="margin-left:4px;">🌓</button>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()" title="Menu">☰</button>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()">
+    <div class="mobile-menu" onclick="event.stopPropagation()">
+      <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+      <a href="#hero" onclick="toggleMobileMenu()">Home</a>
+      <a href="#services" onclick="toggleMobileMenu()">Services</a>
+      <a href="#plans" onclick="toggleMobileMenu()">Plans</a>
+      <a href="about.html">About</a>
+      <a href="register.html">Join Now</a>
+      <a href="login.html">Admin Panel</a>
+    </div>
+  </div>
+
+  <!-- ─── VIP Hero Section ───────────────────────────── -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-lines"></div>
+    <div class="hero-particles">
+      <div class="particle p1"></div>
+      <div class="particle p2"></div>
+      <div class="particle p3"></div>
+      <div class="particle p4"></div>
+      <div class="particle p5"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="vip-crown">👑</span> VIP Fitness Experience
+      </div>
+      <h1 class="hero-title">
+        Unleash Your<br><span class="accent">Inner Champion</span>
+      </h1>
+      <p class="hero-subtitle">
+        Experience the future of fitness with our state-of-the-art facilities, world-class trainers,
+        and personalized programs designed to transform your body and mind.
+      </p>
+      <div class="hero-cta">
+        <a href="register.html" class="btn btn-primary btn-hero btn-glow">🚀 Become a Member</a>
+        <a href="#services" class="btn btn-secondary btn-hero">Explore Services ↓</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="num" id="heroTotal">0</span>
+          <span class="lbl">Active Members</span>
+        </div>
+        <div class="hero-stat">
+          <span class="num" id="heroTrainers">4</span>
+          <span class="lbl">Expert Trainers</span>
+        </div>
+        <div class="hero-stat">
+          <span class="num" id="heroPlans">6</span>
+          <span class="lbl">Flexible Plans</span>
+        </div>
+        <div class="hero-stat">
+          <span class="num" id="heroYears">5</span>
+          <span class="lbl">Years of Excellence</span>
+        </div>
+      </div>
+    </div>
+
+
+  </section>
+
+  <!-- ─── Services Section ───────────────────────────── -->
+  <section class="services-section" id="services">
+    <div class="section-header">
+      <div class="section-badge">💎 Premium Services</div>
+      <h2>World-Class Fitness Services</h2>
+      <p>Everything you need to achieve your fitness goals under one roof</p>
+    </div>
+    <div class="services-grid stagger-children">
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <div class="service-icon">🏋️</div>
+        </div>
+        <h3 class="service-title">Strength Training</h3>
+        <p class="service-desc">State-of-the-art weight training equipment and dedicated zones for powerlifting, bodybuilding, and functional strength.</p>
+        <div class="service-tag">Popular</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <div class="service-icon">🧘</div>
+        </div>
+        <h3 class="service-title">Yoga & Meditation</h3>
+        <p class="service-desc">Find your zen with our expert-led yoga classes, meditation sessions, and mindfulness workshops.</p>
+        <div class="service-tag">New</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <div class="service-icon">🥊</div>
+        </div>
+        <h3 class="service-title">Boxing & MMA</h3>
+        <p class="service-desc">High-intensity combat fitness training with professional boxing rings and specialized equipment.</p>
+        <div class="service-tag">Trending</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <div class="service-icon">🏃</div>
+        </div>
+        <h3 class="service-title">Cardio Zone</h3>
+        <p class="service-desc">Cutting-edge treadmills, ellipticals, rowing machines, and cycling stations for optimal cardio workouts.</p>
+        <div class="service-tag">Essential</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <div class="service-icon">🤸</div>
+        </div>
+        <h3 class="service-title">Group Classes</h3>
+        <p class="service-desc">Energizing group fitness sessions including HIIT, Zumba, Pilates, spin, and circuit training.</p>
+        <div class="service-tag">Fun</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <div class="service-icon">💪</div>
+        </div>
+        <h3 class="service-title">Personal Training</h3>
+        <p class="service-desc">One-on-one sessions with certified trainers who create customized workout and nutrition plans.</p>
+        <div class="service-tag">VIP</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <div class="service-icon">🧖</div>
+        </div>
+        <h3 class="service-title">Spa & Recovery</h3>
+        <p class="service-desc">Unwind with our sauna, steam room, cold plunge pools, and professional massage therapy services.</p>
+        <div class="service-tag">Premium</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <div class="service-icon">🥗</div>
+        </div>
+        <h3 class="service-title">Nutrition Coaching</h3>
+        <p class="service-desc">Expert nutritionists to help you with meal planning, supplements guidance, and dietary goals.</p>
+        <div class="service-tag">Healthy</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Why Choose Us ──────────────────────────────── -->
+  <section class="why-section">
+    <div class="section-header">
+      <div class="section-badge">🏆 Why GymFit</div>
+      <h2>Why Champions Choose Us</h2>
+      <p>We don't just build bodies — we build lifestyles</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-number">01</div>
+        <h3>24/7 Access</h3>
+        <p>Train anytime, day or night. Our facility never closes because your dedication doesn't keep hours.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-number">02</div>
+        <h3>Expert Coaches</h3>
+        <p>Our certified trainers bring years of experience and specialized knowledge to guide your journey.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-number">03</div>
+        <h3>Premium Equipment</h3>
+        <p>Top-tier machines and free weights from world-renowned fitness brands, maintained daily.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-number">04</div>
+        <h3>Community Vibes</h3>
+        <p>Join a supportive community of like-minded individuals who motivate and inspire each other.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Plans Section ──────────────────────────────── -->
+  <section class="plans-section" id="plans">
+    <div class="section-header">
+      <div class="section-badge">💳 Membership Plans</div>
+      <h2>Choose Your Plan</h2>
+      <p>Flexible plans designed for every fitness goal and budget</p>
+    </div>
+    <div class="plans-grid plans-grid-3col" id="homePlansGrid" style="max-width:1200px;margin:0 auto;">
+      <div class="skeleton" style="height:360px;border-radius:18px;"></div>
+      <div class="skeleton" style="height:360px;border-radius:18px;"></div>
+      <div class="skeleton" style="height:360px;border-radius:18px;"></div>
+    </div>
+    <div style="text-align:center;margin-top:48px;">
+      <a href="register.html" class="btn btn-primary btn-hero btn-glow">🎯 Get Started Today</a>
+    </div>
+  </section>
+
+  <!-- ─── CTA Banner ─────────────────────────────────── -->
+  <section class="cta-banner">
+    <div class="cta-banner-bg"></div>
+    <div class="cta-banner-content">
+      <h2>Ready to Transform Your Life?</h2>
+      <p>Join hundreds of members who have already started their fitness journey with GymFit</p>
+      <div class="hero-cta">
+        <a href="register.html" class="btn btn-primary btn-hero btn-glow">🏆 Join Now — It's Free to Register</a>
+        <a href="about.html" class="btn btn-secondary btn-hero">Learn More About Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="footer-logo">Gym<span>Fit</span></div>
+          <p class="footer-tagline">Unleash your inner champion. Premium fitness experience since 2021.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-link" title="Facebook">📘</a>
+            <a href="#" class="social-link" title="Instagram">📸</a>
+            <a href="#" class="social-link" title="Twitter">🐦</a>
+            <a href="#" class="social-link" title="YouTube">📺</a>
+          </div>
+        </div>
+        <div class="footer-links-group">
+          <h4>Quick Links</h4>
+          <a href="#hero">Home</a>
+          <a href="#services">Services</a>
+          <a href="#plans">Plans</a>
+          <a href="about.html">About Us</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Membership</h4>
+          <a href="register.html">Join Now</a>
+          <a href="#plans">View Plans</a>
+          <a href="login.html">Admin Login</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Contact Info</h4>
+          <p>📍 123 Fitness Avenue, Gym City</p>
+          <p>📞 +1 (555) 123-4567</p>
+          <p>✉️ info@gymfit.com</p>
+          <p>⏰ Open 24/7</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 GymFit. All rights reserved. Built with 💪 by GymFit Team.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const overlay = document.getElementById('mobileMenuOverlay');
+      overlay.classList.toggle('active');
+      document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Load hero stats
+      try {
+        const res = await fetch('/api/members/stats');
+        const data = await res.json();
+        if (data.success) {
+          animateCounter(document.getElementById('heroTotal'), data.data.total);
+        }
+      } catch { }
+
+      // Load plans
+      try {
+        const res = await fetch('/api/plans');
+        const data = await res.json();
+        if (data.success) {
+          const grid = document.getElementById('homePlansGrid');
+          grid.innerHTML = data.data.map(plan => `
+          <div class="plan-card ${plan.popular ? 'popular' : ''} animate-in" style="--plan-color:${plan.color}">
+            ${plan.popular ? '<div class="plan-popular-badge">Most Popular</div>' : ''}
+            <div class="plan-name">${plan.name}</div>
+            <div class="plan-price">
+              <span class="currency">$</span>
+              <span class="amount">${plan.price}</span>
+              <span class="period">/${plan.billingCycle === 'Monthly' ? 'mo' : 'yr'}</span>
+            </div>
+            <div class="plan-duration">${plan.duration} · ${plan.billingCycle}</div>
+            <ul class="plan-features">
+              ${plan.features.map(f => `<li>${f}</li>`).join('')}
+            </ul>
+            <a href="register.html" class="btn btn-primary btn-plan-cta">Select Plan</a>
+          </div>
+        `).join('');
+        }
+      } catch { }
+
+      // Intersection Observer for scroll animations
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.service-card, .why-card, .plan-card').forEach(el => {
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+
+</html>

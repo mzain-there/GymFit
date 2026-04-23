@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Members — GymFit Admin</title>
+  <meta name="description" content="Manage all gym members — add, edit, search, and delete with full CRUD operations." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="page-wrapper">
+
+<!-- ═══ SIDEBAR ══════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🏋️</div>
+    <div class="logo-text">Gym<span>Fit</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+    <div class="nav-section-label">Management</div>
+    <a href="members.html" class="nav-item active"><span class="nav-icon">👥</span><span class="nav-label">Members</span><span class="nav-badge" id="sidebarMemberCount">—</span></a>
+    <a href="trainers.html" class="nav-item"><span class="nav-icon">🏋️</span><span class="nav-label">Trainers</span></a>
+    <a href="plans.html" class="nav-item"><span class="nav-icon">💳</span><span class="nav-label">Plans</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="sidebar-toggle" onclick="Sidebar.toggle()">
+      <span id="sidebarToggleIcon">←</span>
+      <span class="nav-label">Collapse</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══ MAIN CONTENT ═════════════════════════════════ -->
+<div class="main-content" id="mainContent">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <button class="topbar-btn" onclick="Sidebar.toggle()">☰</button>
+    <span class="topbar-title">Member Management</span>
+    <div class="topbar-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInputTop" placeholder="Search members..." autocomplete="off" />
+    </div>
+    <div class="topbar-actions">
+      <button class="topbar-btn" onclick="ThemeManager.toggle()" id="themeToggle">🌓</button>
+      
+      <div class="dropdown">
+        <button class="topbar-btn" id="alertsBtn" title="Alerts" onclick="toggleDropdown('alertsDropdown')">
+          🔔<span class="notification-dot"></span>
+        </button>
+        <div id="alertsDropdown" class="dropdown-content">
+          <div class="dropdown-header">System Notifications</div>
+          <a href="#">⚠️ Member John Doe expired today</a>
+          <a href="#">✅ New plan "Annual Premium" created</a>
+          <a href="#">💰 Payment due for Alice</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <div class="topbar-avatar" onclick="toggleDropdown('profileDropdown')">A</div>
+        <div id="profileDropdown" class="dropdown-content">
+          <div class="dropdown-header">Admin Profile</div>
+          <a href="#" onclick="alert('Open Add Account Modal (To Be Implemented)')">➕ Add New Account</a>
+          <a href="#" onclick="alert('View Other Details')">⚙️ Other Details</a>
+          <a href="#" onclick="localStorage.removeItem('loggedIn'); window.location.href='login.html';">🚪 Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <main class="page-content">
+    <div class="page-header">
+      <div class="page-header-left">
+        <h1>Members</h1>
+        <p id="memberCount">Loading members...</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-secondary" onclick="exportCSV()">📥 Export CSV</button>
+        <button class="btn btn-primary" onclick="openAddModal()">➕ Add Member</button>
+      </div>
+    </div>
+
+    <!-- Members Table Card -->
+    <div class="card">
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-search" style="min-width:200px;">
+          <span>🔍</span>
+          <input type="text" id="searchInput" placeholder="Search by name, email, phone..." />
+        </div>
+        <select class="filter-select" id="statusFilter">
+          <option value="">All Status</option>
+          <option value="Active">Active</option>
+          <option value="Expired">Expired</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+        <select class="filter-select" id="planFilter">
+          <option value="">All Plans</option>
+          <option value="Basic">Basic</option>
+          <option value="Premium">Premium</option>
+          <option value="Elite">Elite</option>
+          <option value="Annual Basic">Annual Basic</option>
+        </select>
+        <select class="filter-select" id="paymentFilter">
+          <option value="">All Payments</option>
+          <option value="Paid">Paid</option>
+          <option value="Unpaid">Unpaid</option>
+        </select>
+      </div>
+
+      <!-- Table -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Phone</th>
+              <th>Plan</th>
+              <th>Status</th>
+              <th>Payment</th>
+              <th>Expiry Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="membersTableBody">
+            <tr><td colspan="7"><div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="pagination" style="padding:16px 24px;"></div>
+    </div>
+
+  </main>
+</div><!-- /main-content -->
+</div><!-- /page-wrapper -->
+
+<!-- ═══ ADD/EDIT MEMBER MODAL ════════════════════════ -->
+<div class="modal-overlay" id="memberModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="memberModalTitle">➕ Add New Member</span>
+      <button class="modal-close" onclick="Modal.close('memberModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="memberForm">
+        <input type="hidden" id="memberId" />
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input type="text" id="memberName" class="form-control" placeholder="John Doe" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input type="email" id="memberEmail" class="form-control" placeholder="john@email.com" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number *</label>
+            <input type="tel" id="memberPhone" class="form-control" placeholder="555-0100" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Age</label>
+            <input type="number" id="memberAge" class="form-control" placeholder="25" min="10" max="100" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender</label>
+            <select id="memberGender" class="form-control">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Membership Plan *</label>
+            <select id="memberPlan" class="form-control" required>
+              <option value="">Select Plan</option>
+              <option value="Basic">Basic — $29.99/mo</option>
+              <option value="Premium">Premium — $59.99/mo</option>
+              <option value="Elite">Elite — $99.99/mo</option>
+              <option value="Annual Basic">Annual Basic — $299.99/yr</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Join Date</label>
+            <input type="date" id="joinDate" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Expiry Date</label>
+            <input type="date" id="expiryDate" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select id="memberStatus" class="form-control">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Expired">Expired</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Payment Status</label>
+            <select id="paymentStatus" class="form-control">
+              <option value="Unpaid">Unpaid</option>
+              <option value="Paid">Paid</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Address</label>
+            <input type="text" id="memberAddress" class="form-control" placeholder="123 Main Street, City, State" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('memberModal')">Cancel</button>
+      <button class="btn btn-primary" id="submitMemberBtn" onclick="document.getElementById('memberForm').dispatchEvent(new Event('submit'))">Add Member</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VIEW MEMBER MODAL ════════════════════════════ -->
+<div class="modal-overlay" id="viewMemberModal">
+  <div class="modal" style="max-width:640px;">
+    <div class="modal-header">
+      <span class="modal-title">👁️ Member Details</span>
+      <button class="modal-close" onclick="Modal.close('viewMemberModal')">✕</button>
+    </div>
+    <div class="modal-body" id="viewModalContent"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="Modal.close('viewMemberModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="toastContainer" class="toast-container"></div>
+
+<script src="js/app.js"></script>
+<script src="js/members.js"></script>
+<script>
+  // Update sidebar badge
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const res = await fetch('/api/members/stats');
+      const data = await res.json();
+      if (data.success) document.getElementById('sidebarMemberCount').textContent = data.data.total;
+    } catch {}
+  });
+</script>
+
+<!-- ─── Footer ─────────────────────────────────────── -->
+<footer class="site-footer" style="margin-left: var(--sidebar-width); transition: margin-left var(--transition);">
+  <div class="footer-content">
+    <div class="footer-bottom" style="padding:20px 0;">
+      <p>&copy; 2026 GymFit. All rights reserved. Built with 💪 by GymFit Team.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
