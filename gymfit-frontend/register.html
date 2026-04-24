@@ -5,7 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Join GymFit — Member Registration</title>
-  <meta name="description" content="Register as a new GymFit member. Fill in your details and choose a plan to start your fitness journey today." />
+  <meta name="description"
+    content="Register as a new GymFit member. Fill in your details and choose a plan to start your fitness journey today." />
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>" />
   <link rel="stylesheet" href="css/style.css" />
@@ -23,7 +24,8 @@
       <a href="about.html">About</a>
       <a href="register.html" class="btn btn-outline btn-sm active-link">Join Now</a>
       <a href="login.html" class="btn btn-primary btn-sm">Admin Panel →</a>
-      <button class="topbar-btn" onclick="ThemeManager.toggle()" title="Toggle theme" style="margin-left:4px;">🌓</button>
+      <button class="topbar-btn" onclick="ThemeManager.toggle()" title="Toggle theme"
+        style="margin-left:4px;">🌓</button>
     </div>
     <button class="mobile-menu-btn" onclick="toggleMobileMenu()" title="Menu">☰</button>
   </nav>
@@ -65,7 +67,7 @@
           <div class="progress-line"></div>
           <div class="progress-step" data-step="3">
             <div class="step-circle">3</div>
-            <span>Membership</span>
+            <span>Membership Info</span>
           </div>
         </div>
 
@@ -85,7 +87,8 @@
             </div>
             <div class="form-group">
               <label class="form-label" for="regAge">Age *</label>
-              <input type="number" id="regAge" class="form-control" placeholder="Your age" min="10" max="100" required />
+              <input type="number" id="regAge" class="form-control" placeholder="Your age" min="10" max="100"
+                required />
               <span class="form-error" id="regAgeError"></span>
             </div>
             <div class="form-group">
@@ -120,7 +123,8 @@
             </div>
             <div class="form-group full">
               <label class="form-label" for="regAddress">Address *</label>
-              <textarea id="regAddress" class="form-control" placeholder="Your full address" rows="3" required></textarea>
+              <textarea id="regAddress" class="form-control" placeholder="Your full address" rows="3"
+                required></textarea>
               <span class="form-error" id="regAddressError"></span>
             </div>
           </div>
@@ -195,7 +199,8 @@
               <div class="form-grid" style="margin-top:16px;">
                 <div class="form-group full">
                   <label class="form-label" for="cardNumber">Card Number</label>
-                  <input type="text" id="cardNumber" class="form-control" placeholder="•••• •••• •••• ••••" maxlength="19" />
+                  <input type="text" id="cardNumber" class="form-control" placeholder="•••• •••• •••• ••••"
+                    maxlength="19" />
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="cardName">Cardholder Name</label>
@@ -210,7 +215,10 @@
                   <input type="password" id="cardCVV" class="form-control" placeholder="•••" maxlength="4" />
                 </div>
               </div>
-              <p class="card-secure-note">🔒 Your card information is secure and encrypted</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+                <p class="card-secure-note" style="margin-top:0;">🔒 Your card information is secure and encrypted</p>
+                <button type="button" class="btn btn-primary btn-sm" onclick="processCardPayment()">💳 Pay Now</button>
+              </div>
             </div>
           </div>
 
@@ -457,6 +465,22 @@
     function clearFieldError(id) {
       const el = document.getElementById(id);
       if (el) { el.textContent = ''; el.style.display = 'none'; }
+    }
+
+    function processCardPayment() {
+      const cn = document.getElementById('cardNumber').value.trim();
+      const cname = document.getElementById('cardName').value.trim();
+      const exp = document.getElementById('cardExpiry').value.trim();
+      const cvv = document.getElementById('cardCVV').value.trim();
+
+      if (!cn || !cname || !exp || !cvv) {
+        Toast.warning('Please complete all card details to pay.');
+        return;
+      }
+
+      // Update the payment dropdown
+      document.getElementById('regPayment').value = 'Paid';
+      Toast.success('Fee paid successfully! Payment verified.');
     }
 
     async function handleRegistration(e) {

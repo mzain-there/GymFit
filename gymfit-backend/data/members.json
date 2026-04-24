@@ -13,5 +13,20 @@
     "gender": "Male",
     "address": "123 main street, NY",
     "createdAt": "2026-04-17T09:58:54.133Z"
+  },
+  {
+    "id": "mem-a559579c",
+    "name": "admin",
+    "email": "admin@gmail.com",
+    "phone": "555-9876",
+    "membershipPlan": "Family Plan",
+    "joinDate": "2026-04-24",
+    "expiryDate": "2026-05-24",
+    "status": "Active",
+    "paymentStatus": "Paid",
+    "age": 36,
+    "gender": "Male",
+    "address": "Street 1, Islamabad, Pakistan.",
+    "createdAt": "2026-04-24T10:26:51.941Z"
   }
 ]

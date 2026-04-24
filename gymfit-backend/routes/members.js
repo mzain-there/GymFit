@@ -63,6 +63,23 @@ router.get('/stats', (req, res) => {
     const thirtyDaysLater = new Date(today);
     thirtyDaysLater.setDate(today.getDate() + 30);
 
+    // Get all plans to ensure breakdown includes all tiers
+    const plansFile = path.join(__dirname, '../data/plans.json');
+    let allPlans = [];
+    try {
+      allPlans = JSON.parse(fs.readFileSync(plansFile, 'utf8'));
+    } catch (e) {}
+
+    const planBreakdown = {};
+    allPlans.forEach(p => planBreakdown[p.name] = 0);
+    members.forEach(m => {
+      if (m.membershipPlan && planBreakdown.hasOwnProperty(m.membershipPlan)) {
+        planBreakdown[m.membershipPlan]++;
+      } else if (m.membershipPlan) {
+        planBreakdown[m.membershipPlan] = (planBreakdown[m.membershipPlan] || 0) + 1;
+      }
+    });
+
     const stats = {
       total: members.length,
       active: members.filter(m => m.status === 'Active').length,
@@ -74,12 +91,7 @@ router.get('/stats', (req, res) => {
         const exp = new Date(m.expiryDate);
         return exp >= today && exp <= thirtyDaysLater;
       }).length,
-      planBreakdown: {
-        Basic: members.filter(m => m.membershipPlan === 'Basic').length,
-        Premium: members.filter(m => m.membershipPlan === 'Premium').length,
-        Elite: members.filter(m => m.membershipPlan === 'Elite').length,
-        'Annual Basic': members.filter(m => m.membershipPlan === 'Annual Basic').length,
-      }
+      planBreakdown: planBreakdown
     };
 
     res.json({ success: true, data: stats });

@@ -57,7 +57,7 @@ function renderTable(members) {
 
     return `
     <tr class="animate-in" style="animation-delay:${i * 0.04}s">
-      <td>
+      <td data-label="Member">
         <div class="member-info">
           <div class="table-avatar">${Format.initials(m.name)}</div>
           <div>
@@ -66,16 +66,16 @@ function renderTable(members) {
           </div>
         </div>
       </td>
-      <td>${escapeHtml(m.phone)}</td>
-      <td><span class="badge ${Format.planBadgeClass(m.membershipPlan)}">${m.membershipPlan}</span></td>
-      <td>
+      <td data-label="Phone">${escapeHtml(m.phone)}</td>
+      <td data-label="Plan"><span class="badge ${Format.planBadgeClass(m.membershipPlan)}">${m.membershipPlan}</span></td>
+      <td data-label="Status">
         <span class="badge ${Format.statusBadgeClass(m.status)}">${m.status}</span>
       </td>
-      <td><span class="badge ${Format.paymentBadgeClass(m.paymentStatus)}">${m.paymentStatus}</span></td>
-      <td>
+      <td data-label="Payment"><span class="badge ${Format.paymentBadgeClass(m.paymentStatus)}">${m.paymentStatus}</span></td>
+      <td data-label="Expiry Date">
         ${Format.date(m.expiryDate)} ${expiryWarning}
       </td>
-      <td>
+      <td data-label="Actions">
         <div class="table-actions">
           <button class="btn btn-sm btn-secondary btn-icon" onclick="viewMember('${m.id}')" title="View">👁️</button>
           <button class="btn btn-sm btn-outline btn-icon" onclick="openEditModal('${m.id}')" title="Edit">✏️</button>

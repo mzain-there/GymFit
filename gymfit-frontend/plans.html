@@ -173,6 +173,14 @@
     </div>
 
   </main>
+<!-- ─── Footer ─────────────────────────────────────── -->
+<footer class="site-footer" >
+  <div class="footer-content">
+    <div class="footer-bottom" style="padding:20px 0;">
+      <p>&copy; 2026 GymFit. All rights reserved. Built with 💪 by GymFit Team.</p>
+    </div>
+  </div>
+</footer>
 </div><!-- /main-content -->
 </div><!-- /page-wrapper -->
 
@@ -340,7 +348,7 @@ function renderMembersPerPlan(stats) {
   const total = stats.total || 1;
 
   document.getElementById('membersPerPlan').innerHTML = `
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+    <div class="stats-grid">
       ${Object.entries(breakdown).map(([plan, count]) => {
         const pct = Math.round((count / total) * 100);
         const color = PLAN_COLORS[plan] || 'var(--primary)';
@@ -415,14 +423,7 @@ async function submitPlanForm() {
 }
 </script>
 
-<!-- ─── Footer ─────────────────────────────────────── -->
-<footer class="site-footer" style="margin-left: var(--sidebar-width); transition: margin-left var(--transition);">
-  <div class="footer-content">
-    <div class="footer-bottom" style="padding:20px 0;">
-      <p>&copy; 2026 GymFit. All rights reserved. Built with 💪 by GymFit Team.</p>
-    </div>
-  </div>
-</footer>
+
 
 </body>
 </html>

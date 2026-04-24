@@ -15,10 +15,11 @@ A **full-stack Gym Management System** built with **Node.js + Express** backend 
 # 1. Clone / navigate into the project folder
 cd gymfit
 
-# 2. Install dependencies
+# 2. Install dependencies (backend)
+cd gymfit-backend
 npm install
 
-# 3. Start the development server
+# 3. Start the server (serves both API and frontend)
 npm run dev          # with nodemon (auto-restart)
 # OR
 npm start            # standard node
@@ -31,43 +32,43 @@ npm start            # standard node
 
 ## 📁 Project Structure
 
+The project has been separated into `gymfit-frontend` and `gymfit-backend` for modularity and easy cloud deployment (e.g. Vercel for frontend, Render for backend).
+
 ```
 gymfit/
 │
-├── server.js                  → Main Express server (entry point)
-├── package.json               → Dependencies & npm scripts
+├── /gymfit-backend            → Node.js backend & API
+│   ├── server.js              → Main Express server (entry point)
+│   ├── package.json           → Dependencies & npm scripts
+│   ├── /routes                → Express routers for Members, Trainers, Plans
+│   └── /data                  → JSON file storage (No DB required)
+│       ├── members.json
+│       ├── trainers.json
+│       └── plans.json
 │
-├── /routes
-│   ├── members.js             → Members CRUD API
-│   ├── trainers.js            → Trainers CRUD API
-│   └── plans.js               → Plans CRUD API
+├── /gymfit-frontend           → Frontend static files
+│   ├── index.html             → Home / Landing page
+│   ├── about.html             → About Us page
+│   ├── register.html          → Member Registration with Payment simulation
+│   ├── login.html             → Admin Login Gateway
+│   ├── dashboard.html         → Admin dashboard
+│   ├── members.html           → Member management
+│   ├── trainers.html          → Trainer management
+│   ├── plans.html             → Membership plans
+│   ├── /css
+│   │   └── style.css          → Global Styles & Themes
+│   └── /js
+│       ├── app.js             → Dynamic API base routing & utilities
+│       └── members.js         → Members CRUD frontend logic
 │
-├── /data                      → JSON file storage (no DB required)
-│   ├── members.json           → Members data
-│   ├── trainers.json          → Trainers data
-│   └── plans.json             → Membership plans data
-│
-└── /public                    → Frontend (served statically)
-    ├── index.html             → Home / Landing page
-    ├── about.html             → About Us page
-    ├── register.html          → Multi-step Public Registration Form
-    ├── login.html             → Admin Login Gateway
-    ├── dashboard.html         → Admin dashboard
-    ├── members.html           → Member management
-    ├── trainers.html          → Trainer management
-    ├── plans.html             → Membership plans
-    │
-    ├── /css
-    │   └── style.css          → Complete stylesheet (dark/light theme)
-    │
-    └── /js
-        ├── app.js             → Shared utilities (auth, dropdowns, toast, theme)
-        └── members.js         → Members CRUD frontend logic
+└── /scripts                   → Utility migration and fix scripts
 ```
 
 ---
 
 ## 🔌 API Endpoints
+
+All API endpoints are dynamically routed via `API_BASE` in the frontend so the app works seamlessly in development and production.
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -84,15 +85,20 @@ gymfit/
 | `DELETE` | `/api/trainers/:id` | Delete trainer |
 | `GET` | `/api/plans` | Get all membership plans |
 | `POST` | `/api/plans` | Add new membership plan |
-| `GET` | `/api/health` | Health check |
 
 ---
 
 ## 🌟 Features
 
+### 📱 100% Mobile Responsive
+The entire application, from the public landing pages to the deep admin management tables, has been meticulously styled to look and function perfectly on any mobile or tablet device.
+- Large data tables (Members, Plans) implement native horizontal scrolling.
+- Sidebars cleanly collapse into mobile hamburger menus.
+- Footers natively adjust their margins to avoid overlapping.
+
 ### 🏢 Public Pages
 - **Modern Landing Page**: Premium VIP aesthetic with services, features and membership options.
-- **Dynamic Registration**: Multi-step wizard supporting user selection of Membership plans with dynamic dates calculation and Cash/Card payment forms.
+- **Dynamic Registration**: Multi-step wizard supporting user selection of Membership plans with dynamic dates calculation and **interactive Card payment simulation**.
 - **About Page**: Fully fledged "About Us" highlighting gym value, mission, vision and statistics.
 
 ### 🔒 Admin Security
@@ -109,7 +115,7 @@ gymfit/
 
 ### 👥 Member Management
 - Full CRUD: Add / View / Edit / Delete
-- Fully responsive table rendering optimized for mobile and touchscreen devices
+- Smooth horizontal scrolling for huge datasets on mobile devices.
 - Search by name, email, phone
 - Filter by status, plan, payment status
 - Pagination (8 per page)
@@ -132,11 +138,9 @@ gymfit/
 ### 🎨 UI/UX
 - 🌙 Dark / ☀️ Light mode toggle (persisted) on all admin and public pages
 - Collapsible sidebar (persisted)
-- Footer structure implemented consistently across all pages
 - Toast notifications (success/error/warning/info)
 - Interactive dropdown menus on top navigation bar
 - Smooth animations & micro-interactions
-- Fully responsive (mobile, tablet, desktop)
 
 ---
 
@@ -147,15 +151,15 @@ gymfit/
 | Backend | Node.js, Express.js |
 | Frontend | HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript |
 | Data Storage | JSON files (no database required) |
-| API Style | RESTful |
+| Architecture | Frontend / Backend Modularization |
 
 ---
 
 ## 📌 Notes
 
-- Data is securely stored in local `/data/*.json` files.
+- Data is securely stored in local `/gymfit-backend/data/*.json` files.
 - The app auto-detects expired memberships on every API call.
-- All forms include client-side + server-side validation.
+- The frontend `js/app.js` checks the environment (`localhost` vs remote URL) to seamlessly direct API calls to the proper endpoint backend server.
 
 ---
 
