@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static frontend files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../gymfit-frontend')));
 
 // ─── API Routes ────────────────────────────────────────────────────────────────
 const membersRouter = require('./routes/members');
@@ -34,15 +34,15 @@ app.get('/api/health', (req, res) => {
 
 // ─── Catch-all: Serve Frontend ─────────────────────────────────────
 app.get('/about', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'about.html'));
+  res.sendFile(path.join(__dirname, '../gymfit-frontend', 'about.html'));
 });
 
 app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'register.html'));
+  res.sendFile(path.join(__dirname, '../gymfit-frontend', 'register.html'));
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, '../gymfit-frontend', 'index.html'));
 });
 
 // ─── Global Error Handler ──────────────────────────────────────────────────────

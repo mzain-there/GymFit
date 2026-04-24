@@ -167,8 +167,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadDashboard() {
   try {
     const [statsRes, membersRes] = await Promise.all([
-      fetch('/api/members/stats').then(r => r.json()),
-      fetch('/api/members').then(r => r.json())
+      fetch(`${API_BASE}/members/stats`).then(r => r.json()),
+      fetch(`${API_BASE}/members`).then(r => r.json())
     ]);
 
     if (statsRes.success) renderStats(statsRes.data);

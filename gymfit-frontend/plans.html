@@ -245,8 +245,8 @@ const PLAN_ICONS = {
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const [plansRes, statsRes] = await Promise.all([
-      fetch('/api/plans').then(r => r.json()),
-      fetch('/api/members/stats').then(r => r.json())
+      fetch(`${API_BASE}/plans`).then(r => r.json()),
+      fetch(`${API_BASE}/members/stats`).then(r => r.json())
     ]);
 
     if (plansRes.success) renderPlans(plansRes.data, statsRes.data);
@@ -388,7 +388,7 @@ async function submitPlanForm() {
   }
 
   try {
-    const res = await fetch('/api/plans', {
+    const res = await fetch(`${API_BASE}/plans`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -402,8 +402,8 @@ async function submitPlanForm() {
     
     // Refresh the page data
     const [plansRes, statsRes] = await Promise.all([
-      fetch('/api/plans').then(r => r.json()),
-      fetch('/api/members/stats').then(r => r.json())
+      fetch(`${API_BASE}/plans`).then(r => r.json()),
+      fetch(`${API_BASE}/members/stats`).then(r => r.json())
     ]);
     if (plansRes.success) renderPlans(plansRes.data, statsRes.data||{});
   } catch (err) {

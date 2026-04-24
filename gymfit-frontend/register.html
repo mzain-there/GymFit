@@ -309,7 +309,7 @@
 
       // Load plans dynamically
       try {
-        const res = await fetch('/api/plans');
+        const res = await fetch(`${API_BASE}/plans`);
         const data = await res.json();
         if (data.success) {
           plansData = data.data;
@@ -483,7 +483,7 @@
       };
 
       try {
-        const res = await fetch('/api/members', {
+        const res = await fetch(`${API_BASE}/members`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(memberData)

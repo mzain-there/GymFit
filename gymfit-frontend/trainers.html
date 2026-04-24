@@ -192,12 +192,12 @@ async function loadTrainers() {
   if (spec)   query += `specialization=${encodeURIComponent(spec)}&`;
 
   try {
-    const res = await fetch(`/api/trainers${query}`);
+    const res = await fetch(`${API_BASE}/trainers${query}`);
     const data = await res.json();
     if (!data.success) throw new Error(data.message);
     allTrainers = data.data;
     renderTrainers(allTrainers);
-    document.getElementById('trainerCount').textContent = `${data.count} trainer${data.count !== 1 ? 's' : ''}`;
+    document.getElementById(`trainerCount').textContent = `${data.count} trainer${data.count !== 1 ? 's' : ''}`;
   } catch (err) {
     Toast.error('Failed to load trainers: ' + err.message);
   }
@@ -289,14 +289,14 @@ async function submitTrainerForm() {
 
   try {
     if (editingTrainerId) {
-      const res = await fetch(`/api/trainers/${editingTrainerId}`, {
+      const res = await fetch(`${API_BASE}/trainers/${editingTrainerId}`, {
         method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (!data.success) throw new Error(data.message);
       Toast.success('Trainer updated!');
     } else {
-      const res = await fetch('/api/trainers', {
+      const res = await fetch(`${API_BASE}/trainers`, {
         method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
       });
       const data = await res.json();
@@ -316,7 +316,7 @@ async function submitTrainerForm() {
 function deleteTrainer(id, name) {
   showConfirm('Delete Trainer', `Remove <strong>${name}</strong> from the system?`, async () => {
     try {
-      const res = await fetch(`/api/trainers/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE}/trainers/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (!data.success) throw new Error(data.message);
       Toast.success(`Trainer "${name}" deleted.`);
@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('specializationFilter').addEventListener('change', loadTrainers);
 
   try {
-    const r = await fetch('/api/members/stats'); const d = await r.json();
+    const r = await fetch(`${API_BASE}/members/stats`); const d = await r.json();
     if (d.success) document.getElementById('sidebarMemberCount').textContent = d.data.total;
   } catch {}
 });

@@ -283,7 +283,7 @@
     document.addEventListener('DOMContentLoaded', async () => {
       // Load hero stats
       try {
-        const res = await fetch('/api/members/stats');
+        const res = await fetch(`${API_BASE}/members/stats`);
         const data = await res.json();
         if (data.success) {
           animateCounter(document.getElementById('heroTotal'), data.data.total);
@@ -292,7 +292,7 @@
 
       // Load plans
       try {
-        const res = await fetch('/api/plans');
+        const res = await fetch(`${API_BASE}/plans`);
         const data = await res.json();
         if (data.success) {
           const grid = document.getElementById('homePlansGrid');
