@@ -1,20 +1,5 @@
 [
   {
-    "id": "mem-d4ced441",
-    "name": "ali",
-    "email": "ali@gmail.com",
-    "phone": "555-00013",
-    "membershipPlan": "Elite",
-    "joinDate": "2026-04-17",
-    "expiryDate": "2026-04-17",
-    "status": "Active",
-    "paymentStatus": "Paid",
-    "age": 20,
-    "gender": "Male",
-    "address": "rawalpindi, Pakistan",
-    "createdAt": "2026-04-17T09:52:27.072Z"
-  },
-  {
     "id": "mem-57a42c18",
     "name": "name",
     "email": "name@gmail.com",
@@ -28,50 +13,5 @@
     "gender": "Male",
     "address": "123 main street, NY",
     "createdAt": "2026-04-17T09:58:54.133Z"
-  },
-  {
-    "id": "mem-ba3f6cd0",
-    "name": "Hamza",
-    "email": "hamza@gmail.com",
-    "phone": "555-00000",
-    "membershipPlan": "Elite",
-    "joinDate": "2026-04-22",
-    "expiryDate": "2026-05-22",
-    "status": "Active",
-    "paymentStatus": "Paid",
-    "age": 19,
-    "gender": "Male",
-    "address": "rawalpindi, Pakistan",
-    "createdAt": "2026-04-22T07:17:20.551Z"
-  },
-  {
-    "id": "mem-679f61b6",
-    "name": "talha",
-    "email": "talha@gmail.com",
-    "phone": "555-9876",
-    "membershipPlan": "Basic",
-    "joinDate": "2026-04-23",
-    "expiryDate": "2026-05-23",
-    "status": "Active",
-    "paymentStatus": "Paid",
-    "age": 18,
-    "gender": "Male",
-    "address": "Rawalpindi, Pakistan",
-    "createdAt": "2026-04-23T05:32:28.187Z"
-  },
-  {
-    "id": "mem-7a9a96d1",
-    "name": "hardie",
-    "email": "har@gmail.com",
-    "phone": "555-9876",
-    "membershipPlan": "Annual Basic",
-    "joinDate": "2026-04-24",
-    "expiryDate": "2027-04-24",
-    "status": "Active",
-    "paymentStatus": "Unpaid",
-    "age": 45,
-    "gender": "Male",
-    "address": "ny, Americe",
-    "createdAt": "2026-04-24T04:33:28.858Z"
   }
 ]

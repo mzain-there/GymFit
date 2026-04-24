@@ -11,7 +11,11 @@
     "salary": 4500,
     "joinDate": "2020-03-15",
     "clients": 24,
-    "certifications": ["NASM-CPT", "CrossFit L2", "TRX"],
+    "certifications": [
+      "NASM-CPT",
+      "CrossFit L2",
+      "TRX"
+    ],
     "schedule": "Mon-Fri 6AM-2PM"
   },
   {
@@ -26,7 +30,10 @@
     "salary": 3800,
     "joinDate": "2021-07-01",
     "clients": 18,
-    "certifications": ["RYT-500", "ACE-CPT"],
+    "certifications": [
+      "RYT-500",
+      "ACE-CPT"
+    ],
     "schedule": "Mon-Wed-Fri 7AM-3PM"
   },
   {
@@ -41,7 +48,10 @@
     "salary": 3500,
     "joinDate": "2022-01-10",
     "clients": 21,
-    "certifications": ["ACSM-CPT", "Insanity Certified"],
+    "certifications": [
+      "ACSM-CPT",
+      "Insanity Certified"
+    ],
     "schedule": "Tue-Thu-Sat 8AM-4PM"
   },
   {
@@ -56,7 +66,10 @@
     "salary": 5200,
     "joinDate": "2018-09-20",
     "clients": 30,
-    "certifications": ["PRECISION Nutrition L2", "NASM-CNC", "ISSA-CPT"],
+    "certifications": [
+      "PRECISION Nutrition",
+      "NASM-CNC"
+    ],
     "schedule": "Mon-Fri 9AM-5PM"
   }
 ]
