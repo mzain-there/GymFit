@@ -5,7 +5,7 @@
 // Set API_BASE dynamically based on the current hostname
 // IMPORTANT: Replace the production URL below with your actual Render backend URL once deployed!
 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_BASE = isLocalhost ? 'http://localhost:3000/api' : 'https://your-backend-name.onrender.com/api';
+const API_BASE = isLocalhost ? 'http://localhost:3000/api' : 'https://gymfit-backend.up.railway.app/api';
 
 // Authentication Check — Only protect admin pages
 const currentPath = window.location.pathname;
@@ -19,16 +19,16 @@ if (isProtectedPage && localStorage.getItem('loggedIn') !== 'true') {
 function toggleDropdown(id) {
   const dropdown = document.getElementById(id);
   const isShowing = dropdown.classList.contains('show');
-  
+
   // Close all other dropdowns
   document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
-  
+
   // Toggle the selected one
   if (!isShowing) dropdown.classList.add('show');
 }
 
 // Close dropdowns if clicked outside
-window.onclick = function(event) {
+window.onclick = function (event) {
   if (!event.target.closest('.dropdown')) {
     document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
   }
@@ -80,9 +80,9 @@ const Toast = {
     setTimeout(() => toast.remove(), 4000);
   },
   success(msg) { this.show(msg, 'success'); },
-  error(msg)   { this.show(msg, 'error'); },
+  error(msg) { this.show(msg, 'error'); },
   warning(msg) { this.show(msg, 'warning'); },
-  info(msg)    { this.show(msg, 'info'); }
+  info(msg) { this.show(msg, 'info'); }
 };
 
 /* ─── Sidebar ──────────────────────────────────────── */
@@ -201,10 +201,10 @@ const API = {
     if (!data.success) throw new Error(data.message || 'Request failed');
     return data;
   },
-  get:    (ep, query = '') => API.request('GET', ep + query),
-  post:   (ep, body)       => API.request('POST', ep, body),
-  put:    (ep, body)       => API.request('PUT', ep, body),
-  delete: (ep)             => API.request('DELETE', ep)
+  get: (ep, query = '') => API.request('GET', ep + query),
+  post: (ep, body) => API.request('POST', ep, body),
+  put: (ep, body) => API.request('PUT', ep, body),
+  delete: (ep) => API.request('DELETE', ep)
 };
 
 /* ─── Format Helpers ───────────────────────────────── */
