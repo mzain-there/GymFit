@@ -242,7 +242,7 @@
           const days = Format.daysUntil(m.expiryDate);
           return `
           <tr class="animate-in" style="animation-delay:${i * 0.06}s">
-            <td>
+            <td data-label="Member">
               <div class="member-info">
                 <div class="table-avatar">${Format.initials(m.name)}</div>
                 <div>
@@ -251,10 +251,10 @@
                 </div>
               </div>
             </td>
-            <td><span class="badge ${Format.planBadgeClass(m.membershipPlan)}">${m.membershipPlan}</span></td>
-            <td><span class="badge ${Format.statusBadgeClass(m.status)}">${m.status}</span></td>
-            <td><span class="badge ${Format.paymentBadgeClass(m.paymentStatus)}">${m.paymentStatus}</span></td>
-            <td style="font-size:13px;${days >= 0 && days <= 30 ? 'color:var(--warning);font-weight:600;' : ''}">${Format.date(m.expiryDate)}</td>
+            <td data-label="Plan"><span class="badge ${Format.planBadgeClass(m.membershipPlan)}">${m.membershipPlan}</span></td>
+            <td data-label="Status"><span class="badge ${Format.statusBadgeClass(m.status)}">${m.status}</span></td>
+            <td data-label="Payment"><span class="badge ${Format.paymentBadgeClass(m.paymentStatus)}">${m.paymentStatus}</span></td>
+            <td data-label="Expiry" style="font-size:13px;${days >= 0 && days <= 30 ? 'color:var(--warning);font-weight:600;' : ''}">${Format.date(m.expiryDate)}</td>
           </tr>`;
         }).join('')
         : '<tr><td colspan="5"><div class="empty-state"><h3>No members yet</h3></div></td></tr>';

@@ -97,8 +97,8 @@
       <div class="card-header">
         <span class="card-title"><span class="icon">📊</span> Plan Comparison Table</span>
       </div>
-      <div class="table-container">
-        <table style="min-width: 800px;">
+      <div class="table-container" style="overflow-x: auto;">
+        <table class="comparison-table">
           <thead>
             <tr>
               <th>Feature</th>
@@ -113,48 +113,48 @@
           <tbody>
             <tr>
               <td><strong>Price</strong></td>
-              <td>$29.99/mo</td>
-              <td>$59.99/mo</td>
-              <td>$99.99/mo</td>
-              <td>$299.99/yr</td>
-              <td>$599.99/yr</td>
-              <td>$149.99/mo</td>
+              <td data-label="Basic">$29.99/mo</td>
+              <td data-label="Premium">$59.99/mo</td>
+              <td data-label="Elite">$99.99/mo</td>
+              <td data-label="Annual Basic">$299.99/yr</td>
+              <td data-label="Annual Prem">$599.99/yr</td>
+              <td data-label="Family Plan">$149.99/mo</td>
             </tr>
             <tr>
               <td>Gym Access</td>
-              <td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅ (4 pax)</td>
+              <td data-label="Basic">✅</td><td data-label="Premium">✅</td><td data-label="Elite">✅</td><td data-label="Annual Basic">✅</td><td data-label="Annual Prem">✅</td><td data-label="Family Plan">✅ (4 pax)</td>
             </tr>
             <tr>
               <td>Locker Room</td>
-              <td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>Family</td>
+              <td data-label="Basic">✅</td><td data-label="Premium">✅</td><td data-label="Elite">✅</td><td data-label="Annual Basic">✅</td><td data-label="Annual Prem">✅</td><td data-label="Family Plan">Family</td>
             </tr>
             <tr>
               <td>Group Classes</td>
-              <td>2/mo</td><td>Unlimited</td><td>Unlimited</td><td>2/mo</td><td>Unlimited</td><td>✅</td>
+              <td data-label="Basic">2/mo</td><td data-label="Premium">Unlimited</td><td data-label="Elite">Unlimited</td><td data-label="Annual Basic">2/mo</td><td data-label="Annual Prem">Unlimited</td><td data-label="Family Plan">✅</td>
             </tr>
             <tr>
               <td>Personal Training</td>
-              <td>❌</td><td>1/mo</td><td>4/mo</td><td>❌</td><td>2/yr</td><td>❌</td>
+              <td data-label="Basic">❌</td><td data-label="Premium">1/mo</td><td data-label="Elite">4/mo</td><td data-label="Annual Basic">❌</td><td data-label="Annual Prem">2/yr</td><td data-label="Family Plan">❌</td>
             </tr>
             <tr>
               <td>Sauna & Steam</td>
-              <td>❌</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td>
+              <td data-label="Basic">❌</td><td data-label="Premium">✅</td><td data-label="Elite">✅</td><td data-label="Annual Basic">❌</td><td data-label="Annual Prem">✅</td><td data-label="Family Plan">✅</td>
             </tr>
             <tr>
               <td>Nutrition Consult</td>
-              <td>❌</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>❌</td>
+              <td data-label="Basic">❌</td><td data-label="Premium">✅</td><td data-label="Elite">✅</td><td data-label="Annual Basic">❌</td><td data-label="Annual Prem">✅</td><td data-label="Family Plan">❌</td>
             </tr>
             <tr>
               <td>Body Assessment</td>
-              <td>❌</td><td>❌</td><td>Monthly</td><td>❌</td><td>❌</td><td>❌</td>
+              <td data-label="Basic">❌</td><td data-label="Premium">❌</td><td data-label="Elite">Monthly</td><td data-label="Annual Basic">❌</td><td data-label="Annual Prem">❌</td><td data-label="Family Plan">❌</td>
             </tr>
             <tr>
               <td>24/7 Access</td>
-              <td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>✅</td><td>❌</td>
+              <td data-label="Basic">❌</td><td data-label="Premium">❌</td><td data-label="Elite">✅</td><td data-label="Annual Basic">❌</td><td data-label="Annual Prem">✅</td><td data-label="Family Plan">❌</td>
             </tr>
             <tr>
               <td>Kids Club</td>
-              <td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅ Wkends</td>
+              <td data-label="Basic">❌</td><td data-label="Premium">❌</td><td data-label="Elite">❌</td><td data-label="Annual Basic">❌</td><td data-label="Annual Prem">❌</td><td data-label="Family Plan">✅ Wkends</td>
             </tr>
           </tbody>
         </table>
