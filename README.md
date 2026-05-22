@@ -32,7 +32,7 @@ npm start            # standard node
 
 ## 📁 Project Structure
 
-The project has been separated into `gymfit-frontend` and `gymfit-backend` for modularity and easy cloud deployment (e.g. Vercel for frontend, Render for backend).
+The project has been separated into `gymfit-frontend` and `gymfit-backend` for modularity and easy cloud deployment (e.g. Vercel for frontend, Railway for backend).
 
 ```
 gymfit/
