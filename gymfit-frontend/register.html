@@ -145,13 +145,7 @@
               </select>
               <span class="form-error" id="regPlanError"></span>
             </div>
-            <div class="form-group">
-              <label class="form-label" for="regPayment">Payment Status *</label>
-              <select id="regPayment" class="form-control" required>
-                <option value="Unpaid">Unpaid — Pay Later</option>
-                <option value="Paid">Paid — Completed</option>
-              </select>
-            </div>
+            <input type="hidden" id="regPayment" value="Paid" />
             <div class="form-group">
               <label class="form-label" for="regJoinDate">Join Date</label>
               <input type="date" id="regJoinDate" class="form-control" />
@@ -190,11 +184,18 @@
 
             <!-- Card Details (shown when Card is selected) -->
             <div class="card-details-box" id="cardDetailsBox" style="display:none;">
-              <div class="card-brands">
-                <span class="card-brand visa">VISA</span>
-                <span class="card-brand mastercard">MasterCard</span>
-                <span class="card-brand amex">AMEX</span>
-                <span class="card-brand discover">Discover</span>
+              <div class="card-brands" style="font-size:32px; display:flex; gap:10px; align-items:center;">
+                <span title="MasterCard"
+                  style="display:inline-flex; align-items:center; justify-content:center; width:48px; height:32px; background:#fff; border-radius:4px; border:1px solid #ccc; font-weight:bold; color:#eb001b; font-size:10px; line-height:1; position:relative; overflow:hidden;">
+                  <div
+                    style="width:20px; height:20px; background:#eb001b; border-radius:50%; position:absolute; left:4px; opacity:0.9;">
+                  </div>
+                  <div
+                    style="width:20px; height:20px; background:#f79e1b; border-radius:50%; position:absolute; right:4px; opacity:0.9;">
+                  </div>
+                </span>
+                <span title="Visa"
+                  style="display:inline-flex; align-items:center; justify-content:center; width:48px; height:32px; background:#fff; border-radius:4px; border:1px solid #ccc; font-weight:900; font-style:italic; color:#1a1f71; font-size:16px;">VISA</span>
               </div>
               <div class="form-grid" style="margin-top:16px;">
                 <div class="form-group full">
@@ -363,7 +364,14 @@
       document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
         radio.addEventListener('change', function () {
           const cardBox = document.getElementById('cardDetailsBox');
-          cardBox.style.display = this.value === 'card' ? 'block' : 'none';
+          const regPayment = document.getElementById('regPayment');
+
+          if (this.value === 'card') {
+            cardBox.style.display = 'block';
+          } else {
+            cardBox.style.display = 'none';
+            if (regPayment) regPayment.value = 'Paid';
+          }
         });
       });
 

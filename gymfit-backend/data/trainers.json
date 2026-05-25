@@ -61,7 +61,7 @@
     "phone": "555-0204",
     "specialization": "Nutrition & Weight Loss",
     "experience": 10,
-    "rating": 5.0,
+    "rating": 5,
     "status": "On Leave",
     "salary": 5200,
     "joinDate": "2018-09-20",
@@ -71,5 +71,21 @@
       "NASM-CNC"
     ],
     "schedule": "Mon-Fri 9AM-5PM"
+  },
+  {
+    "id": "trainer-65de1699",
+    "name": "Hamza",
+    "email": "hamza@gmail.com",
+    "phone": "222467898",
+    "specialization": "CrossFit",
+    "experience": 1,
+    "rating": 5,
+    "status": "Active",
+    "salary": 1500,
+    "joinDate": "2026-05-25",
+    "clients": 0,
+    "certifications": [],
+    "schedule": "",
+    "createdAt": "2026-05-25T04:39:33.736Z"
   }
 ]

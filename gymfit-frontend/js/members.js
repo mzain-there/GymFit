@@ -53,7 +53,15 @@ function renderTable(members) {
 
   tbody.innerHTML = paginated.map((m, i) => {
     const days = Format.daysUntil(m.expiryDate);
+    const isExpired = days < 0;
     const expiryWarning = (days >= 0 && days <= 30) ? `<span title="Expires in ${days} days">⚠️</span>` : '';
+    
+    let displayStatus = m.status;
+    let statusBadge = Format.statusBadgeClass(m.status);
+    if (isExpired && displayStatus !== 'Inactive') {
+      displayStatus = 'Expired';
+      statusBadge = 'badge-danger';
+    }
 
     return `
     <tr class="animate-in" style="animation-delay:${i * 0.04}s">
@@ -69,7 +77,7 @@ function renderTable(members) {
       <td data-label="Phone">${escapeHtml(m.phone)}</td>
       <td data-label="Plan"><span class="badge ${Format.planBadgeClass(m.membershipPlan)}">${m.membershipPlan}</span></td>
       <td data-label="Status">
-        <span class="badge ${Format.statusBadgeClass(m.status)}">${m.status}</span>
+        <span class="badge ${statusBadge}">${displayStatus}</span>
       </td>
       <td data-label="Payment"><span class="badge ${Format.paymentBadgeClass(m.paymentStatus)}">${m.paymentStatus}</span></td>
       <td data-label="Expiry Date">
@@ -77,6 +85,7 @@ function renderTable(members) {
       </td>
       <td data-label="Actions">
         <div class="table-actions">
+          ${isExpired ? `<button class="btn btn-sm btn-primary" onclick="renewMember('${m.id}')" title="Renew Membership">Renew</button>` : ''}
           <button class="btn btn-sm btn-secondary btn-icon" onclick="viewMember('${m.id}')" title="View">👁️</button>
           <button class="btn btn-sm btn-outline btn-icon" onclick="openEditModal('${m.id}')" title="Edit">✏️</button>
           <button class="btn btn-sm btn-danger btn-icon" onclick="deleteMember('${m.id}', '${escapeHtml(m.name)}')" title="Delete">🗑️</button>
@@ -179,6 +188,22 @@ function viewField(label, value) {
     </div>`;
 }
 
+function handlePaymentMethodChange() {
+  const method = document.getElementById('paymentMethod').value;
+  const statusContainer = document.getElementById('paymentStatusContainer');
+  const cardLogos = document.getElementById('cardLogosContainer');
+  const statusSelect = document.getElementById('paymentStatus');
+  
+  if (method === 'Cash') {
+    if (statusContainer) statusContainer.style.display = 'none';
+    if (cardLogos) cardLogos.style.display = 'none';
+    if (statusSelect) statusSelect.value = 'Paid';
+  } else {
+    if (statusContainer) statusContainer.style.display = 'block';
+    if (cardLogos) cardLogos.style.display = 'block';
+  }
+}
+
 /* ─── Add Member Modal ─────────────────────────────── */
 function openAddModal() {
   editingMemberId = null;
@@ -186,6 +211,12 @@ function openAddModal() {
   document.getElementById('memberId').value = '';
   document.getElementById('memberModalTitle').textContent = '➕ Add New Member';
   document.getElementById('submitMemberBtn').textContent = 'Add Member';
+  
+  const paymentMethod = document.getElementById('paymentMethod');
+  if (paymentMethod) {
+    paymentMethod.value = 'Card';
+    handlePaymentMethodChange();
+  }
 
   // Set default join date to today
   document.getElementById('joinDate').value = new Date().toISOString().split('T')[0];
@@ -212,6 +243,12 @@ function openEditModal(id) {
   document.getElementById('memberStatus').value = m.status;
   document.getElementById('paymentStatus').value = m.paymentStatus;
   document.getElementById('memberAddress').value = m.address || '';
+  
+  const paymentMethod = document.getElementById('paymentMethod');
+  if (paymentMethod) {
+    paymentMethod.value = 'Card';
+    handlePaymentMethodChange();
+  }
 
   Modal.open('memberModal');
 }
@@ -258,19 +295,38 @@ async function submitMemberForm(e) {
 
 /* ─── Delete Member ────────────────────────────────── */
 function deleteMember(id, name) {
-  showConfirm(
-    'Delete Member',
-    `Are you sure you want to delete <strong>${escapeHtml(name)}</strong>? This action cannot be undone.`,
-    async () => {
-      try {
-        await API.delete(`/members/${id}`);
-        Toast.success(`Member "${name}" deleted.`);
-        await loadMembers();
-      } catch (err) {
-        Toast.error('Delete failed: ' + err.message);
-      }
+  showConfirm('Delete Member', `Are you sure you want to delete <strong>${name}</strong>? All their payment records will also be permanently deleted.`, async () => {
+    try {
+      const res = await fetch(`${API_BASE}/members/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      
+      Toast.success(`Member "${name}" and their payments have been deleted.`);
+      await loadMembers();
+    } catch (err) {
+      Toast.error('Failed to delete member: ' + err.message);
     }
-  );
+  });
+}
+
+// ─── Renew Member ──────────────────────────────────────────
+async function renewMember(id) {
+  showConfirm('Renew Membership', `Renew this membership for another period? This will charge the member and log a new payment.`, async () => {
+    try {
+      const res = await fetch(`${API_BASE}/members/${id}/renew`, { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentStatus: 'Paid' })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      
+      Toast.success(`Membership renewed successfully!`);
+      await loadMembers();
+    } catch (err) {
+      Toast.error('Failed to renew membership: ' + err.message);
+    }
+  });
 }
 
 /* ─── Export CSV ───────────────────────────────────── */

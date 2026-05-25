@@ -281,12 +281,20 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-      // Load hero stats
+      // Load hero stats (Members & Trainers & Plans counts)
       try {
         const res = await fetch(`${API_BASE}/members/stats`);
         const data = await res.json();
         if (data.success) {
           animateCounter(document.getElementById('heroTotal'), data.data.total);
+        }
+      } catch { }
+
+      try {
+        const res = await fetch(`${API_BASE}/trainers`);
+        const data = await res.json();
+        if (data.success) {
+          animateCounter(document.getElementById('heroTrainers'), data.count || data.data.length);
         }
       } catch { }
 
@@ -296,6 +304,9 @@
         const data = await res.json();
         if (data.success) {
           const grid = document.getElementById('homePlansGrid');
+          
+          animateCounter(document.getElementById('heroPlans'), data.data.length);
+          
           grid.innerHTML = data.data.map(plan => `
           <div class="plan-card ${plan.popular ? 'popular' : ''} animate-in" style="--plan-color:${plan.color}">
             ${plan.popular ? '<div class="plan-popular-badge">Most Popular</div>' : ''}

@@ -11,7 +11,7 @@ const API_BASE = isLocalhost ? 'http://localhost:3000/api' : 'https://gymfit-bac
 const currentPath = window.location.pathname;
 const protectedPages = ['dashboard.html', 'members.html', 'trainers.html', 'plans.html'];
 const isProtectedPage = protectedPages.some(page => currentPath.includes(page));
-if (isProtectedPage && localStorage.getItem('loggedIn') !== 'true') {
+if (isProtectedPage && (localStorage.getItem('loggedIn') !== 'true' || !Auth.getActiveAccount())) {
   window.location.href = 'login.html';
 }
 
@@ -286,4 +286,10 @@ document.addEventListener('DOMContentLoaded', () => {
   ThemeManager.init();
   Toast.init();
   Sidebar.init();
+
+  // Initialize auth profile dropdown on protected pages
+  if (typeof Auth !== 'undefined' && Auth.getActiveAccount()) {
+    Auth.renderProfileDropdown();
+    Auth.updateWelcomeMessage();
+  }
 });

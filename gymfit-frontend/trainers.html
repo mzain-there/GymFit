@@ -25,6 +25,7 @@
     <a href="members.html" class="nav-item"><span class="nav-icon">👥</span><span class="nav-label">Members</span><span class="nav-badge" id="sidebarMemberCount">—</span></a>
     <a href="trainers.html" class="nav-item active"><span class="nav-icon">🏋️</span><span class="nav-label">Trainers</span></a>
     <a href="plans.html" class="nav-item"><span class="nav-icon">💳</span><span class="nav-label">Plans</span></a>
+    <a href="payments.html" class="nav-item"><span class="nav-icon">💰</span><span class="nav-label">Payments</span></a>
   </nav>
   <div class="sidebar-footer">
     <button class="sidebar-toggle" onclick="Sidebar.toggle()">
@@ -47,25 +48,14 @@
     <div class="topbar-actions">
       <button class="topbar-btn" onclick="ThemeManager.toggle()" id="themeToggle">🌓</button>
       
-      <div class="dropdown">
-        <button class="topbar-btn" id="alertsBtn" title="Alerts" onclick="toggleDropdown('alertsDropdown')">
-          🔔<span class="notification-dot"></span>
-        </button>
-        <div id="alertsDropdown" class="dropdown-content">
-          <div class="dropdown-header">System Notifications</div>
-          <a href="#">⚠️ Member John Doe expired today</a>
-          <a href="#">✅ New plan "Annual Premium" created</a>
-          <a href="#">💰 Payment due for Alice</a>
-        </div>
-      </div>
+
 
       <div class="dropdown">
-        <div class="topbar-avatar" onclick="toggleDropdown('profileDropdown')">A</div>
+        <div id="profileAvatarTrigger" onclick="toggleDropdown('profileDropdown')">
+          <div class="topbar-avatar">A</div>
+        </div>
         <div id="profileDropdown" class="dropdown-content">
-          <div class="dropdown-header">Admin Profile</div>
-          <a href="#" onclick="alert('Open Add Account Modal (To Be Implemented)')">➕ Add New Account</a>
-          <a href="#" onclick="alert('View Other Details')">⚙️ Other Details</a>
-          <a href="#" onclick="localStorage.removeItem('loggedIn'); window.location.href='login.html';">🚪 Logout</a>
+          <div class="dropdown-header">Loading...</div>
         </div>
       </div>
     </div>
@@ -181,6 +171,7 @@
 
 <div id="toastContainer" class="toast-container"></div>
 
+<script src="js/auth.js"></script>
 <script src="js/app.js"></script>
 <script>
 let allTrainers = [];

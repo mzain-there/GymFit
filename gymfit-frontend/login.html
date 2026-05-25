@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Login — GymFit</title>
-  <meta name="description" content="Login to the GymFit admin dashboard to manage members, trainers, and membership plans." />
+  <title>Sign In — GymFit</title>
+  <meta name="description" content="Sign in or create an account to access the GymFit admin dashboard." />
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>" />
   <link rel="stylesheet" href="css/style.css" />
@@ -43,7 +43,7 @@
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 440px;
+      max-width: 460px;
       padding: 20px;
     }
 
@@ -54,6 +54,7 @@
       border: 1px solid var(--border);
       box-shadow: var(--shadow-lg), 0 0 60px rgba(0, 229, 153, 0.05);
       text-align: center;
+      transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
     .login-logo {
@@ -103,6 +104,10 @@
       margin-bottom: 16px;
       display: none;
       text-align: left;
+      background: rgba(255, 71, 87, 0.08);
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 71, 87, 0.2);
     }
 
     .login-footer {
@@ -136,6 +141,138 @@
       height: 1px;
       background: var(--border);
     }
+
+    /* Tab Switcher */
+    .auth-tabs {
+      display: flex;
+      background: var(--bg-input);
+      border-radius: var(--radius);
+      padding: 4px;
+      margin-bottom: 28px;
+      border: 1px solid var(--border);
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: calc(var(--radius) - 4px);
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .auth-tab.active {
+      background: var(--primary);
+      color: #000;
+      box-shadow: 0 2px 12px var(--primary-glow);
+    }
+
+    .auth-tab:not(.active):hover {
+      color: var(--text-primary);
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+      animation: fadeSlideIn 0.3s ease;
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-10px); }
+      40% { transform: translateX(10px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+
+    /* Existing accounts list */
+    .existing-accounts {
+      margin-top: 16px;
+    }
+
+    .account-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .account-item:hover {
+      border-color: var(--primary);
+      background: var(--bg-elevated);
+      transform: translateX(4px);
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .account-item-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #000;
+      flex-shrink: 0;
+    }
+
+    .account-item-avatar img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .account-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .account-item-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .account-item-email {
+      font-size: 12px;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .account-item-arrow {
+      color: var(--text-muted);
+      font-size: 16px;
+      transition: transform 0.2s;
+    }
+
+    .account-item:hover .account-item-arrow {
+      color: var(--primary);
+      transform: translateX(4px);
+    }
   </style>
 </head>
 
@@ -144,28 +281,50 @@
   <div class="login-grid-lines"></div>
 
   <div class="login-wrapper">
-    <div class="login-box">
+    <div class="login-box" id="loginBox">
       <div class="login-icon">🔐</div>
       <div class="login-logo">Gym<span>Fit</span></div>
-      <p class="login-subtitle">Enter your credentials to access the admin panel</p>
+      <p class="login-subtitle">Access your admin dashboard</p>
 
-      <form id="loginForm" onsubmit="handleLogin(event)">
+      <!-- Auth Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabSignIn" onclick="switchTab('signin')">Sign In</button>
+        <button class="auth-tab" id="tabSignUp" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form class="auth-form active" id="signinForm" onsubmit="handleSignIn(event)">
         <div class="form-group">
-          <label class="form-label">Username</label>
-          <input type="text" id="username" class="form-control" placeholder="Enter username" required autofocus
-            style="width:100%;" />
+          <label class="form-label">Gmail / Email</label>
+          <input type="email" id="signinEmail" class="form-control" placeholder="yourname@gmail.com" required
+            autofocus style="width:100%;" />
         </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" id="password" class="form-control" placeholder="Enter password" required
-            style="width:100%;" />
-        </div>
-        <div class="login-error" id="loginError">
-          ❌ Invalid username or password. Please try again.
-        </div>
+        <div class="login-error" id="signinError"></div>
         <button type="submit" class="btn btn-primary btn-glow"
           style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">
-          Login to Dashboard →
+          Sign In →
+        </button>
+
+        <!-- Existing Accounts Quick Access -->
+        <div id="existingAccountsList" class="existing-accounts"></div>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form class="auth-form" id="signupForm" onsubmit="handleSignUp(event)">
+        <div class="form-group">
+          <label class="form-label">Gmail / Email *</label>
+          <input type="email" id="signupEmail" class="form-control" placeholder="yourname@gmail.com" required
+            style="width:100%;" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Username *</label>
+          <input type="text" id="signupUsername" class="form-control" placeholder="Choose a display name" required
+            style="width:100%;" />
+        </div>
+        <div class="login-error" id="signupError"></div>
+        <button type="submit" class="btn btn-primary btn-glow"
+          style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">
+          Create Account →
         </button>
       </form>
 
@@ -176,63 +335,135 @@
         &nbsp;·&nbsp;
         <a href="register.html">Register as Member</a>
       </div>
-
-      <p style="margin-top:20px;font-size:11px;color:var(--text-muted);">
-        Default credentials: <strong>admin</strong> / <strong>admin</strong>
-      </p>
     </div>
   </div>
 
+  <script src="js/auth.js"></script>
   <script>
-    function handleLogin(e) {
+    // If already logged in, redirect to dashboard
+    if (localStorage.getItem('loggedIn') === 'true' && Auth.getActiveAccount()) {
+      window.location.href = 'dashboard.html';
+    }
+
+    function switchTab(tab) {
+      document.getElementById('tabSignIn').classList.toggle('active', tab === 'signin');
+      document.getElementById('tabSignUp').classList.toggle('active', tab === 'signup');
+      document.getElementById('signinForm').classList.toggle('active', tab === 'signin');
+      document.getElementById('signupForm').classList.toggle('active', tab === 'signup');
+      
+      // Clear errors
+      document.getElementById('signinError').style.display = 'none';
+      document.getElementById('signupError').style.display = 'none';
+    }
+
+    function handleSignIn(e) {
       e.preventDefault();
-      const u = document.getElementById('username').value.toLowerCase();
-      const p = document.getElementById('password').value.toLowerCase();
-      const errorEl = document.getElementById('loginError');
+      const email = document.getElementById('signinEmail').value.trim();
+      const errorEl = document.getElementById('signinError');
 
-      if (u === 'admin' && p === 'admin') {
-        localStorage.setItem('loggedIn', 'true');
-        // Add a small animation before redirect
-        document.querySelector('.login-box').style.transform = 'scale(0.95)';
-        document.querySelector('.login-box').style.opacity = '0.5';
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 300);
+      if (!email) {
+        showError(errorEl, 'Please enter your email address.');
+        return;
+      }
+
+      const result = Auth.signIn(email);
+      if (result.success) {
+        animateAndRedirect();
       } else {
-        errorEl.style.display = 'block';
-        document.querySelector('.login-box').style.animation = 'shake 0.5s ease';
-        setTimeout(() => {
-          document.querySelector('.login-box').style.animation = '';
-        }, 500);
+        showError(errorEl, result.message);
+        shakeBox();
       }
     }
+
+    function handleSignUp(e) {
+      e.preventDefault();
+      const email = document.getElementById('signupEmail').value.trim();
+      const username = document.getElementById('signupUsername').value.trim();
+      const errorEl = document.getElementById('signupError');
+
+      if (!email || !username) {
+        showError(errorEl, 'Please fill in all fields.');
+        return;
+      }
+
+      if (username.length < 2) {
+        showError(errorEl, 'Username must be at least 2 characters.');
+        return;
+      }
+
+      const result = Auth.createAccount(email, username);
+      if (result.success) {
+        animateAndRedirect();
+      } else {
+        showError(errorEl, result.message);
+        shakeBox();
+      }
+    }
+
+    function quickSignIn(email) {
+      const result = Auth.signIn(email);
+      if (result.success) {
+        animateAndRedirect();
+      }
+    }
+
+    function showError(el, message) {
+      el.textContent = '❌ ' + message;
+      el.style.display = 'block';
+    }
+
+    function animateAndRedirect() {
+      const box = document.getElementById('loginBox');
+      box.style.transform = 'scale(0.95)';
+      box.style.opacity = '0.5';
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 300);
+    }
+
+    function shakeBox() {
+      const box = document.getElementById('loginBox');
+      box.style.animation = 'shake 0.5s ease';
+      setTimeout(() => { box.style.animation = ''; }, 500);
+    }
+
+    // Render existing accounts for quick sign-in
+    function renderExistingAccounts() {
+      const accounts = Auth.getAccounts();
+      const container = document.getElementById('existingAccountsList');
+      
+      if (accounts.length === 0) {
+        container.innerHTML = `
+          <div style="margin-top:20px;padding:16px;background:var(--bg-input);border-radius:var(--radius);border:1px solid var(--border);">
+            <p style="font-size:12px;color:var(--text-muted);text-align:center;margin:0;">No accounts yet. <a href="#" onclick="switchTab('signup'); return false;" style="color:var(--primary);font-weight:600;">Create one</a> to get started.</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <div style="margin-top:20px;">
+          <p style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);font-weight:700;margin-bottom:10px;">Quick Access</p>
+          ${accounts.map(acc => `
+            <div class="account-item" onclick="quickSignIn('${Auth.escapeHtml(acc.email)}')">
+              <div class="account-item-avatar" style="background:${acc.avatarColor};">
+                ${acc.avatar 
+                  ? `<img src="${acc.avatar}" alt="${Auth.escapeHtml(acc.username)}">`
+                  : Auth.getInitials(acc.username)
+                }
+              </div>
+              <div class="account-item-info">
+                <div class="account-item-name">${Auth.escapeHtml(acc.username)}</div>
+                <div class="account-item-email">${Auth.escapeHtml(acc.email)}</div>
+              </div>
+              <span class="account-item-arrow">→</span>
+            </div>
+          `).join('')}
+        </div>`;
+    }
+
+    // Initial render
+    renderExistingAccounts();
   </script>
-
-  <style>
-    @keyframes shake {
-
-      0%,
-      100% {
-        transform: translateX(0);
-      }
-
-      20% {
-        transform: translateX(-10px);
-      }
-
-      40% {
-        transform: translateX(10px);
-      }
-
-      60% {
-        transform: translateX(-5px);
-      }
-
-      80% {
-        transform: translateX(5px);
-      }
-    }
-  </style>
 </body>
 
 </html>

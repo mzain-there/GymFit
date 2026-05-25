@@ -2318,6 +2318,18 @@ textarea.form-control { resize: vertical; min-height: 90px; }
   text-transform: uppercase; color: var(--text-muted);
   background-color: var(--bg-base); border-bottom: 1px solid var(--border);
 }
+.dropdown-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+.dropdown-content a img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
 
 @keyframes slideInDown {
   from { opacity: 0; transform: translateY(-10px); }

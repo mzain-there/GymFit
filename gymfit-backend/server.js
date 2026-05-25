@@ -17,10 +17,12 @@ app.use(express.static(path.join(__dirname, '../gymfit-frontend')));
 const membersRouter = require('./routes/members');
 const trainersRouter = require('./routes/trainers');
 const plansRouter = require('./routes/plans');
+const paymentsRouter = require('./routes/payments');
 
 app.use('/api/members', membersRouter);
 app.use('/api/trainers', trainersRouter);
 app.use('/api/plans', plansRouter);
+app.use('/api/payments', paymentsRouter);
 
 // ─── Health Check ──────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {

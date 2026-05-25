@@ -80,6 +80,14 @@ router.get('/stats', (req, res) => {
       }
     });
 
+    // Calculate members added this month
+    const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+    const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    const newMembersThisMonth = members.filter(m => {
+      const joinDate = new Date(m.joinDate || m.createdAt);
+      return joinDate >= monthStart && joinDate <= monthEnd;
+    }).length;
+
     const stats = {
       total: members.length,
       active: members.filter(m => m.status === 'Active').length,
@@ -91,6 +99,7 @@ router.get('/stats', (req, res) => {
         const exp = new Date(m.expiryDate);
         return exp >= today && exp <= thirtyDaysLater;
       }).length,
+      newMembersThisMonth: newMembersThisMonth,
       planBreakdown: planBreakdown
     };
 
@@ -126,8 +135,10 @@ router.post('/', (req, res) => {
       return res.status(409).json({ success: false, message: 'A member with this email already exists.' });
     }
 
+    const nextId = members.length > 0 ? (Math.max(0, ...members.map(m => parseInt(m.id) || 0)) + 1).toString() : '1';
+
     const newMember = {
-      id: 'mem-' + uuidv4().slice(0, 8),
+      id: nextId,
       name: name.trim(),
       email: email.trim().toLowerCase(),
       phone: phone.trim(),
@@ -144,6 +155,14 @@ router.post('/', (req, res) => {
 
     members.push(newMember);
     writeMembers(members);
+
+    // Record payment automatically
+    try {
+      const paymentsRouter = require('./payments');
+      paymentsRouter.recordPayment(newMember);
+    } catch (e) {
+      console.error('Failed to record payment', e);
+    }
 
     res.status(201).json({ success: true, message: 'Member added successfully!', data: newMember });
   } catch (err) {
@@ -188,10 +207,52 @@ router.delete('/:id', (req, res) => {
     const index = members.findIndex(m => m.id === req.params.id);
     if (index === -1) return res.status(404).json({ success: false, message: 'Member not found' });
 
-    const deleted = members.splice(index, 1)[0];
+    const deleted = members.splice(index, 1);
     writeMembers(members);
 
-    res.json({ success: true, message: `Member "${deleted.name}" deleted successfully.` });
+    // Delete associated payments
+    try {
+      const paymentsRouter = require('./payments');
+      paymentsRouter.deletePaymentsByMember(req.params.id);
+    } catch (e) {
+      console.error('Failed to delete payments', e);
+    }
+
+    res.json({ success: true, message: 'Member deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error', error: err.message });
+  }
+});
+
+// POST /api/members/:id/renew - Renew member subscription
+router.post('/:id/renew', (req, res) => {
+  try {
+    const members = readMembers();
+    const index = members.findIndex(m => m.id === req.params.id);
+    if (index === -1) return res.status(404).json({ success: false, message: 'Member not found' });
+
+    const member = members[index];
+    
+    // Extend expiry by 1 month (simplistic logic, normally based on plan)
+    const currentExpiry = member.expiryDate ? new Date(member.expiryDate) : new Date();
+    // If already expired, start from today
+    const baseDate = currentExpiry < new Date() ? new Date() : currentExpiry;
+    baseDate.setMonth(baseDate.getMonth() + 1);
+    
+    member.expiryDate = baseDate.toISOString().split('T')[0];
+    member.paymentStatus = req.body.paymentStatus || 'Paid'; // defaults to Paid on renew
+    
+    writeMembers(members);
+
+    // Record new payment
+    try {
+      const paymentsRouter = require('./payments');
+      paymentsRouter.recordPayment(member);
+    } catch (e) {
+      console.error('Failed to record renewal payment', e);
+    }
+
+    res.json({ success: true, message: 'Membership renewed!', data: member });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Server error', error: err.message });
   }

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Records — GymFit Admin</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏋️</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <div class="page-wrapper">
+
+    <!-- ═══ SIDEBAR ══════════════════════════════════════ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🏋️</div>
+        <div class="logo-text">Gym<span>Fit</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a>
+        <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span><span
+            class="nav-label">Dashboard</span></a>
+        <div class="nav-section-label">Management</div>
+        <a href="members.html" class="nav-item"><span class="nav-icon">👥</span><span
+            class="nav-label">Members</span><span class="nav-badge" id="sidebarMemberCount">—</span></a>
+        <a href="trainers.html" class="nav-item"><span class="nav-icon">🏋️</span><span
+            class="nav-label">Trainers</span></a>
+        <a href="plans.html" class="nav-item"><span class="nav-icon">💳</span><span class="nav-label">Plans</span></a>
+        <a href="payments.html" class="nav-item active"><span class="nav-icon">💰</span><span class="nav-label">Payments</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="sidebar-toggle" onclick="Sidebar.toggle()">
+          <span id="sidebarToggleIcon">←</span>
+          <span class="nav-label">Collapse</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ═══ MAIN CONTENT ═════════════════════════════════ -->
+    <div class="main-content" id="mainContent">
+
+      <!-- Topbar -->
+      <header class="topbar">
+        <button class="topbar-btn" onclick="Sidebar.toggle()">☰</button>
+        <span class="topbar-title">Payment Records</span>
+        <div class="topbar-actions">
+          <button class="topbar-btn" onclick="ThemeManager.toggle()" id="themeToggle">🌓</button>
+
+          <div class="dropdown">
+            <div id="profileAvatarTrigger" onclick="toggleDropdown('profileDropdown')">
+              <div class="topbar-avatar">A</div>
+            </div>
+            <div id="profileDropdown" class="dropdown-content">
+              <div class="dropdown-header">Loading...</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <main class="page-content">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h1>Payment Records</h1>
+            <p>View all transactions and track monthly revenue.</p>
+          </div>
+        </div>
+
+        <!-- ─ Stats Cards ───────────────────────────── -->
+        <div class="stats-grid stagger-children" id="paymentStatsGrid">
+          <div class="stat-card skeleton" style="height:100px;"></div>
+          <div class="stat-card skeleton" style="height:100px;"></div>
+          <div class="stat-card skeleton" style="height:100px;"></div>
+        </div>
+
+        <!-- ─ Payment Table ─────────────────────────────── -->
+        <div class="card" style="margin-top:24px;">
+          <div class="card-header">
+            <span class="card-title"><span class="icon">💰</span> Transaction History</span>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Member</th>
+                  <th>Plan</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="paymentsTableBody">
+                <tr>
+                  <td colspan="6">
+                    <div class="empty-state">
+                      <div class="spinner" style="margin:0 auto;"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+
+      <!-- ─── Footer ─────────────────────────────────────── -->
+      <footer class="site-footer">
+        <div class="footer-content">
+          <div class="footer-bottom" style="padding:20px 0;">
+            <p>&copy; 2026 GymFit. All rights reserved. Built with 💪 by GymFit Team.</p>
+          </div>
+        </div>
+      </footer>
+    </div><!-- /main-content -->
+  </div><!-- /page-wrapper -->
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadPayments();
+      // sidebar member count
+      try {
+        const statsRes = await fetch(`${API_BASE}/members/stats`).then(r => r.json());
+        if (statsRes.success) {
+          document.getElementById('sidebarMemberCount').textContent = statsRes.data.total;
+        }
+      } catch(e) {}
+    });
+
+    async function loadPayments() {
+      try {
+        const res = await fetch(`${API_BASE}/payments`).then(r => r.json());
+        if (res.success) {
+          renderStats(res.stats);
+          renderTable(res.data);
+        }
+      } catch (err) {
+        Toast.error('Failed to load payments data.');
+        console.error(err);
+      }
+    }
+
+    function renderStats(stats) {
+      document.getElementById('paymentStatsGrid').innerHTML = `
+        <div class="stat-card animate-in" style="--card-color:#00e599">
+          <div class="stat-icon" style="background:rgba(0,229,153,0.12)">💵</div>
+          <div class="stat-info">
+            <div class="stat-value">$${stats.totalRevenue}</div>
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-change up">All time</div>
+          </div>
+        </div>
+        <div class="stat-card animate-in" style="--card-color:#f59e0b">
+          <div class="stat-icon" style="background:rgba(245,158,11,0.12)">📅</div>
+          <div class="stat-info">
+            <div class="stat-value">$${stats.monthlyRevenue}</div>
+            <div class="stat-label">Monthly Revenue</div>
+            <div class="stat-change up">This month</div>
+          </div>
+        </div>
+        <div class="stat-card animate-in" style="--card-color:#6366f1">
+          <div class="stat-icon" style="background:rgba(99,102,241,0.12)">📝</div>
+          <div class="stat-info">
+            <div class="stat-value">${stats.totalTransactions}</div>
+            <div class="stat-label">Total Transactions</div>
+            <div class="stat-change up">Recorded</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTable(payments) {
+      const tbody = document.getElementById('paymentsTableBody');
+      if (payments.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><h3>No payment records found</h3></div></td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = payments.map((p, i) => `
+        <tr class="animate-in" style="animation-delay:${i * 0.05}s">
+          <td data-label="Date">${Format.date(p.date)}</td>
+          <td data-label="Member">
+            <div class="member-info">
+              <div class="table-avatar" style="width:32px;height:32px;font-size:12px;">${Format.initials(p.memberName)}</div>
+              <div>
+                <div class="member-name">${escapeHtml(p.memberName)}</div>
+                <div style="font-size:12px;color:var(--text-muted);">${escapeHtml(p.memberEmail)}</div>
+              </div>
+            </div>
+          </td>
+          <td data-label="Plan"><span class="badge badge-info">${p.plan}</span></td>
+          <td data-label="Amount"><strong>$${p.amount}</strong></td>
+          <td data-label="Status"><span class="badge ${p.status === 'Paid' ? 'badge-success' : 'badge-danger'}">${p.status}</span></td>
+          <td data-label="Actions">
+            ${p.status === 'Unpaid' ? `<button class="btn btn-sm btn-primary" onclick="markPaid('${p.id}')">Mark Paid</button>` : `<span style="font-size:12px;color:var(--text-muted)">Completed</span>`}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function markPaid(id) {
+      try {
+        const res = await fetch(`${API_BASE}/payments/${id}/status`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'Paid' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          Toast.success('Payment marked as paid.');
+          loadPayments();
+        } else {
+          Toast.error(data.message);
+        }
+      } catch(err) {
+        Toast.error('Network error');
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+  </script>
+</body>
+</html>
