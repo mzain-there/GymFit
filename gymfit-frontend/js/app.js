@@ -5,7 +5,7 @@
 // Set API_BASE dynamically based on the current hostname
 // IMPORTANT: Replace the production URL below with your actual Render backend URL once deployed!
 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_BASE = isLocalhost ? 'http://localhost:3000/api' : 'https://gymfit-backend.up.railway.app/api';
+const API_BASE = isLocalhost ? 'http://localhost:3000/api' : 'https://gymfit-t8m9.onrender.com/api';
 
 // Authentication Check — Only protect admin pages
 const currentPath = window.location.pathname;

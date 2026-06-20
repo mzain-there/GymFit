@@ -15,34 +15,18 @@
     "createdAt": "2026-05-25T04:30:30.835Z"
   },
   {
-    "id": "2",
-    "name": "Ali",
-    "email": "ali@gmail.com",
-    "phone": "555-00013",
+    "id": "4",
+    "name": "haider",
+    "email": "haider@gmail.com",
+    "phone": "4444-1234",
     "membershipPlan": "Basic",
     "joinDate": "2026-05-25",
     "expiryDate": "2026-06-25",
     "status": "Active",
     "paymentStatus": "Paid",
-    "age": "24",
+    "age": 30,
     "gender": "Male",
-    "address": "rawalpindi, Pakistan",
-    "createdAt": "2026-05-25T04:34:10.467Z",
-    "updatedAt": "2026-05-25T04:34:25.932Z"
-  },
-  {
-    "id": "3",
-    "name": "ahmad",
-    "email": "ah@gmail.com",
-    "phone": "1298765",
-    "membershipPlan": "Elite",
-    "joinDate": "2026-05-25",
-    "expiryDate": "2026-06-25",
-    "status": "Active",
-    "paymentStatus": "Paid",
-    "age": 19,
-    "gender": "Male",
-    "address": "rawalpindi, Pakistan",
-    "createdAt": "2026-05-25T04:54:07.856Z"
+    "address": "Islamabad, Pakistan",
+    "createdAt": "2026-05-25T07:00:35.018Z"
   }
 ]
